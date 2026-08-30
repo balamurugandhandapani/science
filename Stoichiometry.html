@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stoichiometry & Tolerance Factor Calculator | Balamurugan Dhandapani (IBD)</title>
+<link rel="icon" type="image/png" sizes="16x16" href="https://uploads.onecompiler.io/43st7vu5m/44dbqcxw8/1000261655.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<!-- Cyber Background Canvas -->
+<canvas id="cyber-bg"></canvas>
+
+<!-- Header Section (loaded live from header.html) -->
+<div id="include-header"></div>
+
+<!-- Nav (loaded live from nav.html) -->
+<div id="include-nav"></div>
+
+<!-- Stoichiometry Calculator (loaded live from stoich-body.html) -->
+<div id="include-body"></div>
+
+<!-- Footer (loaded live from footer.html) -->
+<div id="include-footer"></div>
+
+<script>
+  async function loadInclude(id, url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+    document.getElementById(id).outerHTML = await res.text();
+  }
+  async function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.body.appendChild(s);
+    });
+  }
+  (async () => {
+    await Promise.all([
+      loadInclude('include-header', 'header.html'),
+      loadInclude('include-nav', 'nav.html'),
+      loadInclude('include-body', 'stoich-body.html'),
+      loadInclude('include-footer', 'footer.html'),
+    ]);
+    await loadScript('common.js');
+    await loadScript('stoich.js');
+  })().catch(err => {
+    console.error(err);
+    document.body.insertAdjacentHTML('afterbegin',
+      `<p style="color:#f66;padding:1rem;font-family:monospace">
+        Could not load page sections: ${err.message}.<br>
+        This page must be served over http(s):// — run start_server.bat/.sh
+        (or npx serve -l 8000) and open http://localhost:8000
+      </p>`);
+  });
+</script>
+</body>
+</html>

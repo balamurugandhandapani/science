@@ -1,0 +1,141 @@
+<main class="explorer-wrap" id="explorer" name="top">
+  <div class="explorer-intro">
+    <p class="eyebrow">Materials Science Tool &middot; General Chemistry</p>
+    <h2>Stoichiometry &amp; Tolerance Factor Calculator</h2>
+    <p>Balance any chemical equation and instantly see the moles, mass, and limiting reagent - or check perovskite stability with the tolerance factor, or look up any formula's molecular weight.</p>
+  </div>
+
+  <div class="calc-tabs" id="calcTabs">
+    <button class="calc-tab active" data-tab="synthesis">Basic Stoichiometry</button>
+    <button class="calc-tab" data-tab="tolerance">Tolerance Factor</button>
+    <button class="calc-tab" data-tab="reference">Formula &rarr; MW</button>
+  </div>
+
+  <!-- ============ TOLERANCE FACTOR CALCULATOR ============ -->
+  <div class="calc-panel" id="panel-tolerance">
+    <div class="calc-card">
+      <h3>Goldschmidt Tolerance Factor</h3>
+      <p class="calc-formula">t = (r<sub>A</sub> + r<sub>O</sub>) / [&radic;2 &times; (r<sub>B avg</sub> + r<sub>O</sub>)]</p>
+      <div class="calc-grid">
+        <label>Compound name <input type="text" id="tf-compound" value="Sr2TiMnO6"></label>
+        <label><span>r<sub>A</sub> &ndash; A-site radius (&Aring;)</span> <input type="number" step="0.0001" id="tf-ra" value="1.44"></label>
+<label><span>r<sub>B</sub> &ndash; B-site radius (&Aring;)</span> <input type="number" step="0.0001" id="tf-rb" value="0.605"></label>
+<label><span>r<sub>B'</sub> &ndash; B'-site radius (&Aring;, leave blank for simple ABO3)</span> <input type="number" step="0.0001" id="tf-rbp" value="0.53"></label>
+<label><span>r<sub>O</sub> &ndash; O<sup>2-</sup> radius (&Aring;)</span> <input type="number" step="0.0001" id="tf-ro" value="1.40"></label>
+      </div>
+      <button class="calc-btn" onclick="calcTolerance()">Calculate</button>
+      <div class="calc-result" id="tf-result"></div>
+      <p class="calc-note">Stability guide: t = 0.9&ndash;1.0 ideal cubic perovskite &middot; t = 0.71&ndash;0.9 orthorhombic/rhombohedral (tilted) &middot; t &gt; 1.0 hexagonal &middot; t &lt; 0.71 not perovskite-forming. Uses Shannon ionic radii for the relevant coordination number/oxidation state; r<sub>O</sub> is typically 1.40 &Aring; (6-coordinate O<sup>2-</sup>).</p>
+    </div>
+  </div>
+
+  <!-- ============ REACTION STOICHIOMETRY CALCULATOR ============ -->
+  <div class="calc-panel active" id="panel-synthesis">
+    <div class="calc-card">
+      <span class="step-badge">Step 1</span>
+      <h3>Enter Your Chemical Equation</h3>
+      <p class="calc-formula">Type the reactants and products. Don't worry about coefficients - click Balance and it works them out for you.</p>
+
+      <div class="eq-row">
+        <div class="eq-side">
+          <label class="eq-label">Reactants <span class="eq-hint">(separate with +)</span></label>
+          <div class="eq-input-wrap">
+            <input type="text" id="eqReactants" value="H2 + O2" placeholder="e.g. H2 + O2">
+            <select class="insert-el" onchange="insertElementInto(this,'eqReactants')"><option value="">+ el</option></select>
+            <button type="button" class="pick-btn" onclick="openElementPicker('eqReactants')" title="Pick visually from periodic table">&#9638;</button>
+          </div>
+        </div>
+        <div class="eq-arrow">&rarr;</div>
+        <div class="eq-side">
+          <label class="eq-label">Products <span class="eq-hint">(separate with +)</span></label>
+          <div class="eq-input-wrap">
+            <input type="text" id="eqProducts" value="H2O" placeholder="e.g. H2O">
+            <select class="insert-el" onchange="insertElementInto(this,'eqProducts')"><option value="">+ el</option></select>
+            <button type="button" class="pick-btn" onclick="openElementPicker('eqProducts')" title="Pick visually from periodic table">&#9638;</button>
+          </div>
+        </div>
+      </div>
+
+      <button class="calc-btn" onclick="doBalance()">&#9878; Balance Equation</button>
+      <div class="calc-result" id="balancedEqResult"></div>
+
+      <div id="stoichSection" style="display:none; margin-top:26px;">
+        <span class="step-badge">Step 2</span>
+        <h3 style="margin-top:6px;">How Much Do You Have?</h3>
+        <p class="calc-formula">Type an amount into ONE row below (grams or moles) - everything else fills in automatically.</p>
+        <div class="table-scroll">
+          <table class="calc-table" id="stoichTable">
+            <thead>
+              <tr><th>Role</th><th>Species</th><th>Coeff.</th><th>MW (g/mol)</th><th>Your amount</th><th>Unit</th><th>Moles</th><th>Mass (g)</th></tr>
+            </thead>
+            <tbody id="stoichRows"></tbody>
+          </table>
+        </div>
+        <button class="calc-btn" style="margin-top:14px;" onclick="calcStoichFromKnown()">Calculate</button>
+        <div class="calc-result" id="stoich-result"></div>
+
+        <button type="button" class="advanced-toggle" onclick="toggleLimiting()">
+          <span id="limitingToggleIcon">&#9656;</span> Advanced: Limiting Reagent Calculator
+        </button>
+        <div id="limitingSection" style="display:none;">
+          <p class="calc-formula">Have more than one reactant on hand? Enter how much of each, and find out which one runs out first (and how much product you'll actually get).</p>
+          <div class="table-scroll">
+            <table class="calc-table" id="limitingTable">
+              <thead><tr><th>Reactant</th><th>Coeff.</th><th>MW (g/mol)</th><th>Available mass (g)</th></tr></thead>
+              <tbody id="limitingRows"></tbody>
+            </table>
+          </div>
+          <button class="calc-btn" style="margin-top:14px;" onclick="calcLimitingReagent()">Find Limiting Reagent</button>
+          <div class="calc-result" id="limiting-result"></div>
+        </div>
+      </div>
+
+      <div class="mini-ptable-overlay" id="miniPtableOverlay">
+        <div class="mini-ptable-box">
+          <div class="mini-ptable-head">
+            <span>Pick an element</span>
+            <button type="button" class="mini-close" onclick="closeElementPicker()">&times;</button>
+          </div>
+          <div class="mini-ptable-grid" id="miniPtableGrid"></div>
+          <div class="mini-legend">
+            <span><i class="mini-block-s"></i>s</span>
+            <span><i class="mini-block-p"></i>p</span>
+            <span><i class="mini-block-d"></i>d</span>
+            <span><i class="mini-block-f"></i>f</span>
+          </div>
+        </div>
+      </div>
+
+      <p class="calc-note">Balancing is solved algebraically from each formula's elemental composition (not looked up or hardcoded) - works for any valid equation, including redox reactions. Molecular weights are computed live from periodic table atomic mass data. All results rounded to 4 decimal places (0.0001).</p>
+    </div>
+  </div>
+
+  <!-- ============ REFERENCE: LIVE FORMULA -> MOLECULAR WEIGHT ============ -->
+  <div class="calc-panel" id="panel-reference">
+    <div class="calc-card">
+      <h3>Formula &rarr; Molecular Weight Calculator</h3>
+      <p class="calc-formula">Type any chemical formula &mdash; molecular weight is computed live from this page's own embedded periodic table atomic mass data, not a separate hardcoded list.</p>
+      <div class="calc-grid">
+        <label>Formula (e.g. Sr(NO3)2, Cr(NO3)3.9H2O, C6H8O7)
+          <span class="precursor-cell" style="display:flex;gap:8px;">
+            <input type="text" id="refFormulaInput" placeholder="Cr(NO3)3.9H2O" oninput="calcRefFormula()" style="flex:1;">
+            <select class="insert-el" id="refInsertEl" onchange="insertElementInto(this,'refFormulaInput')">
+              <option value="">+ insert element</option>
+              </select>
+          </span>
+        </label>
+      </div>
+      <div class="calc-result" id="refFormulaResult"></div>
+      <p class="calc-note">Supports nested parentheses (e.g. Ca(OH)2) and hydrate dot-notation (e.g. Cr(NO3)3.9H2O = Cr(NO3)3 with 9 waters of hydration). If an element symbol isn't recognized, check spelling/capitalization (e.g. "Co" is cobalt, "CO" is not a valid element token).</p>
+    </div>
+  </div>
+
+  <p class="sources-note">
+    Formulas reproduce standard citrate-nitrate sol-gel ("Pechini-style") synthesis stoichiometry and the
+    Goldschmidt tolerance factor equation. Ionic radii, precursor purities, and molar ratios (CA:metal, EG:CA,
+    NH3) vary by specific recipe and literature source - the defaults shown are a common starting point, not a
+    universal standard. Verify against your own lab protocol / literature reference before use. Molecular weights
+    throughout this page are computed live from embedded periodic table atomic mass data, not a separately
+    maintained list. All results rounded to 4 decimal places (0.0001).
+  </p>
+</main>
