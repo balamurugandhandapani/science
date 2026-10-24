@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://science.balamurugandhandapani.in/sitemap.xml
