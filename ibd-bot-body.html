@@ -1,0 +1,106 @@
+<!-- IBD Bot BODY ONLY.
+     Uses the existing site's header, navigation, footer, theme variables and fonts.
+     Do not paste this into header.html or footer.html. -->
+<main id="ibd-bot" class="ibd-bot-wrap" aria-labelledby="ibd-title">
+  <section class="ibd-hero">
+    <div class="ibd-hero-copy">
+      <p class="ibd-eyebrow">SCIENTIFIC INTELLIGENCE · LOCAL-FIRST AI</p>
+      <h2 id="ibd-title">IBD Bot</h2>
+      <p class="ibd-lead">Your scientific learning and research workspace.</p>
+      <p class="ibd-description">Explore physics, mathematics, chemistry and scientific computing in one place. Your conversations and files are intended to remain on your device.</p>
+    </div>
+    <div class="ibd-hero-side">
+      <div class="ibd-status-card" aria-live="polite" data-state="loading">
+        <span class="ibd-status-dot"></span>
+        <div>
+          <strong id="ibd-engine-status">Starting AI engine…</strong>
+          <small id="ibd-engine-detail">The model loads on this device</small>
+        </div>
+      </div>
+      <details class="ibd-model-box" id="ibd-model-box">
+        <summary>Model and voice settings</summary>
+        <label for="ibd-model-select">Model</label>
+        <select id="ibd-model-select"></select>
+        <label for="ibd-lang">Voice language</label>
+        <select id="ibd-lang">
+          <option value="en-IN">English (India)</option>
+          <option value="ta-IN">Tamil</option>
+          <option value="en-US">English (US)</option>
+          <option value="en-GB">English (UK)</option>
+        </select>
+        <button id="ibd-load" type="button" class="ibd-chip">Load selected model</button>
+        <p id="ibd-load-msg" aria-live="polite"></p>
+      </details>
+    </div>
+  </section>
+
+  <section class="ibd-workspace" aria-label="IBD Bot workspace">
+    <aside class="ibd-side-panel">
+      <button class="ibd-new-chat" id="ibd-new-chat" type="button">＋ New conversation</button>
+      <p class="ibd-side-label">WORKSPACE</p>
+      <button class="ibd-side-item is-active" type="button" aria-current="page">◉ Scientific assistant</button>
+      <div class="ibd-side-note">
+        <strong>Local-first design</strong>
+        <p>The model runs in your browser on a WebGPU-capable device. No AI API key is used.</p>
+      </div>
+      <div class="ibd-side-note ibd-side-note-muted">
+        <strong>Privacy reminder</strong>
+        <p>Do not upload confidential or personally sensitive documents to an experimental build.</p>
+      </div>
+    </aside>
+
+    <div class="ibd-chat-panel">
+      <div class="ibd-chat-topbar">
+        <div>
+          <strong>Scientific assistant</strong>
+          <span>Physics · Mathematics · Chemistry</span>
+        </div>
+        <button id="ibd-new-chat-mobile" class="ibd-chip ibd-new-mobile" type="button">New chat</button>
+        <span class="ibd-local-tag">LOCAL-FIRST</span>
+      </div>
+
+      <div class="ibd-chat-content" id="ibd-chat-content" aria-live="polite">
+        <div class="ibd-welcome" id="ibd-welcome">
+          <div class="ibd-welcome-mark">IBD</div>
+          <p class="ibd-eyebrow">WELCOME TO YOUR RESEARCH DESK</p>
+          <h3>What would you like to understand?</h3>
+          <p>The AI loads on this device when the page opens. When the status shows ready, ask in Tamil or English, attach a text file or an equation image, or use the microphone.</p>
+          <div class="ibd-prompt-grid">
+            <button class="ibd-prompt" type="button" data-prompt="Explain the physical meaning of the Schrödinger equation.">
+              <span>PHYSICS</span><strong>Explain the Schrödinger equation</strong>
+            </button>
+            <button class="ibd-prompt" type="button" data-prompt="Derive the standard result for the integral of 1/(1+x²).">
+              <span>MATHEMATICS</span><strong>Derive an integration result</strong>
+            </button>
+            <button class="ibd-prompt" type="button" data-prompt="Explain chemical stoichiometry with a simple example.">
+              <span>CHEMISTRY</span><strong>Understand stoichiometry</strong>
+            </button>
+            <button class="ibd-prompt" type="button" data-prompt="Explain how numerical simulation is used in scientific computing.">
+              <span>COMPUTING</span><strong>Explore scientific simulation</strong>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div class="ibd-composer-area">
+        <div class="ibd-attachment-row">
+          <label class="ibd-attach-btn" for="ibd-file-input">＋ Attach file</label>
+          <input id="ibd-file-input" type="file" hidden multiple accept=".txt,.md,.csv,.tsv,.json,.tex,.py,.png,.jpg,.jpeg">
+          <button id="ibd-voice" type="button" class="ibd-chip">Voice chat: off</button>
+          <span id="ibd-file-label">Text files and equation images. PDF, Word and Excel are not supported yet.</span>
+        </div>
+        <form class="ibd-composer" id="ibd-composer">
+          <textarea id="ibd-message" rows="1" maxlength="12000" placeholder="Ask a physics, mathematics or chemistry question..." aria-label="Message"></textarea>
+          <button id="ibd-mic" class="ibd-mic" type="button" aria-label="Speak your message">Mic</button>
+          <button id="ibd-send" type="submit" aria-label="Send message" disabled>↑</button>
+        </form>
+        <div class="ibd-composer-foot">
+          <span>Enter to send · Shift + Enter for a new line</span>
+          <span id="ibd-foot-note">Small on-device model: verify important results</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <p class="ibd-build-note"><strong>Development status:</strong> The in-browser inference engine, streaming chat, text-file and image attachments, speech input/output, LaTeX display and .tex/Word export are wired in. Not yet built: PDF/Word/Excel reading, computed (tool-verified) maths, offline caching of the app itself, and self-hosted model files. Small models make mistakes, so verify important results.</p>
+</main>

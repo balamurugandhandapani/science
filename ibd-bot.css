@@ -1,0 +1,124 @@
+/* IBD Bot body styles — fully scoped; does not alter the site's header, nav or footer. */
+#ibd-bot {
+  --ibd-ink: var(--text-dark, #013938);
+  --ibd-accent: var(--accent, #800000);
+  --ibd-line: var(--line, rgba(1,57,56,.14));
+  --ibd-muted: var(--text-dim, rgba(1,57,56,.62));
+  --ibd-panel: var(--panel, rgba(255,255,255,.9));
+  max-width: 1320px;
+  margin: 0 auto;
+  padding: 30px 20px 34px;
+  color: var(--ibd-ink);
+  font-family: 'Poppins', sans-serif;
+}
+#ibd-bot * { box-sizing: border-box; }
+#ibd-bot button, #ibd-bot textarea { font: inherit; }
+#ibd-bot .ibd-hero {
+  display: flex; align-items: flex-end; justify-content: space-between;
+  gap: 22px; margin-bottom: 22px;
+}
+#ibd-bot .ibd-eyebrow {
+  margin: 0 0 7px; color: var(--ibd-accent);
+  font: 600 10px/1.5 'IBM Plex Mono', monospace; letter-spacing: .14em;
+}
+#ibd-bot h2 { margin: 0; color: var(--ibd-ink); font-size: clamp(27px,4vw,38px); line-height: 1.15; }
+#ibd-bot .ibd-lead { margin: 7px 0 5px; font-size: 16px; font-weight: 600; }
+#ibd-bot .ibd-description { max-width: 680px; margin: 0; color: var(--ibd-muted); font-size: 13px; line-height: 1.7; }
+#ibd-bot .ibd-status-card {
+  display: flex; align-items: center; gap: 11px; min-width: 230px;
+  padding: 13px 15px; border: 1px solid var(--ibd-line); border-radius: 13px;
+  background: var(--ibd-panel); box-shadow: 0 5px 18px rgba(0,0,0,.035);
+}
+#ibd-bot .ibd-status-card strong, #ibd-bot .ibd-status-card small { display:block; }
+#ibd-bot .ibd-status-card strong { font-size: 12px; }
+#ibd-bot .ibd-status-card small { margin-top: 3px; color: var(--ibd-muted); font-size: 10px; line-height:1.4; }
+#ibd-bot .ibd-status-dot { width: 9px; height: 9px; flex: 0 0 9px; border-radius: 50%; background: #b8860b; box-shadow: 0 0 0 4px rgba(184,134,11,.12); }
+#ibd-bot .ibd-workspace {
+  display: grid; grid-template-columns: 220px minmax(0,1fr); min-height: 660px;
+  overflow: hidden; border: 1px solid var(--ibd-line); border-radius: 17px;
+  background: var(--ibd-panel); box-shadow: 0 10px 30px rgba(0,0,0,.045);
+}
+#ibd-bot .ibd-side-panel {
+  padding: 17px 13px; border-right: 1px solid var(--ibd-line);
+  background: rgba(1,57,56,.025);
+}
+#ibd-bot .ibd-new-chat {
+  width:100%; padding: 11px 12px; border: 1px solid var(--ibd-accent);
+  border-radius: 9px; background: var(--ibd-accent); color:#fff;
+  text-align:left; font-size:12px; font-weight:600; cursor:pointer;
+}
+#ibd-bot .ibd-side-label { margin: 24px 8px 9px; color:var(--ibd-muted); font:600 9px 'IBM Plex Mono',monospace; letter-spacing:.13em; }
+#ibd-bot .ibd-side-item { width:100%; padding:10px 9px; border:0; border-radius:8px; background:rgba(128,0,0,.07); color:var(--ibd-accent); text-align:left; font-size:11px; font-weight:600; }
+#ibd-bot .ibd-side-note { margin: 24px 5px 0; padding: 12px 10px; border:1px solid var(--ibd-line); border-radius:10px; background:rgba(255,255,255,.55); }
+#ibd-bot .ibd-side-note strong { font-size:11px; }
+#ibd-bot .ibd-side-note p { margin:6px 0 0; color:var(--ibd-muted); font-size:10px; line-height:1.6; }
+#ibd-bot .ibd-side-note-muted { margin-top:12px; background:transparent; }
+#ibd-bot .ibd-chat-panel { display:flex; min-width:0; flex-direction:column; }
+#ibd-bot .ibd-chat-topbar { display:flex; align-items:center; justify-content:space-between; gap:12px; padding:15px 19px; border-bottom:1px solid var(--ibd-line); }
+#ibd-bot .ibd-chat-topbar strong, #ibd-bot .ibd-chat-topbar span { display:block; }
+#ibd-bot .ibd-chat-topbar strong { font-size:13px; }
+#ibd-bot .ibd-chat-topbar span { margin-top:3px; color:var(--ibd-muted); font-size:10px; }
+#ibd-bot .ibd-chat-topbar .ibd-local-tag { margin:0; padding:5px 8px; border:1px solid var(--ibd-line); border-radius:20px; color:var(--ibd-accent); font:600 9px 'IBM Plex Mono',monospace; letter-spacing:.06em; }
+#ibd-bot .ibd-chat-content { flex:1; min-height:430px; padding:30px clamp(15px,4vw,48px); }
+#ibd-bot .ibd-welcome { max-width:760px; margin:25px auto; text-align:center; }
+#ibd-bot .ibd-welcome-mark { display:grid; place-items:center; width:54px; height:54px; margin:0 auto 20px; border:1px solid rgba(128,0,0,.2); border-radius:16px; background:rgba(128,0,0,.06); color:var(--ibd-accent); font:700 17px 'IBM Plex Mono',monospace; }
+#ibd-bot .ibd-welcome h3 { margin:0 0 9px; font-size:clamp(19px,3vw,25px); }
+#ibd-bot .ibd-welcome > p:not(.ibd-eyebrow) { max-width:580px; margin:0 auto; color:var(--ibd-muted); font-size:12px; line-height:1.7; }
+#ibd-bot .ibd-prompt-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:10px; margin-top:25px; text-align:left; }
+#ibd-bot .ibd-prompt { min-height:82px; padding:12px 14px; border:1px solid var(--ibd-line); border-radius:11px; background:rgba(255,255,255,.65); color:var(--ibd-ink); cursor:pointer; text-align:left; transition:border-color .18s,transform .18s; }
+#ibd-bot .ibd-prompt:hover { border-color:var(--ibd-accent); transform:translateY(-1px); }
+#ibd-bot .ibd-prompt span { display:block; margin-bottom:7px; color:var(--ibd-accent); font:600 9px 'IBM Plex Mono',monospace; letter-spacing:.1em; }
+#ibd-bot .ibd-prompt strong { display:block; font-size:11px; }
+#ibd-bot .ibd-composer-area { padding:12px clamp(12px,3vw,28px) 15px; border-top:1px solid var(--ibd-line); background:rgba(1,57,56,.018); }
+#ibd-bot .ibd-attachment-row { display:flex; align-items:center; gap:10px; min-height:27px; margin-bottom:8px; color:var(--ibd-muted); font-size:9px; }
+#ibd-bot .ibd-attach-btn { color:var(--ibd-accent); font-weight:600; cursor:not-allowed; opacity:.8; }
+#ibd-bot .ibd-composer { display:flex; align-items:flex-end; gap:10px; padding:9px 10px 9px 14px; border:1px solid var(--ibd-line); border-radius:13px; background:#fff; }
+#ibd-bot .ibd-composer textarea { width:100%; min-height:28px; max-height:150px; resize:vertical; border:0; outline:0; background:transparent; color:var(--ibd-ink); font-size:12px; line-height:1.6; }
+#ibd-bot .ibd-composer textarea::placeholder { color:var(--ibd-muted); }
+#ibd-bot .ibd-composer button { width:34px; height:34px; flex:0 0 34px; border:0; border-radius:9px; background:var(--ibd-accent); color:#fff; font-size:20px; cursor:not-allowed; opacity:.45; }
+#ibd-bot .ibd-composer-foot { display:flex; justify-content:space-between; gap:10px; margin:7px 2px 0; color:var(--ibd-muted); font:9px 'IBM Plex Mono',monospace; }
+#ibd-bot .ibd-build-note { margin:12px 2px 0; color:var(--ibd-muted); font-size:10px; line-height:1.65; }
+#ibd-bot .ibd-build-note strong { color:var(--ibd-accent); }
+@media(max-width:760px) {
+  #ibd-bot { padding:22px 12px 28px; }
+  #ibd-bot .ibd-hero { align-items:stretch; flex-direction:column; }
+  #ibd-bot .ibd-status-card { min-width:0; }
+  #ibd-bot .ibd-workspace { grid-template-columns:1fr; min-height:620px; }
+  #ibd-bot .ibd-side-panel { display:none; }
+  #ibd-bot .ibd-chat-content { min-height:420px; padding:20px 13px; }
+  #ibd-bot .ibd-welcome { margin:12px auto; }
+  #ibd-bot .ibd-prompt-grid { grid-template-columns:1fr; }
+  #ibd-bot .ibd-composer-foot { flex-direction:column; }
+}
+
+/* ---- Engine integration additions (all scoped under #ibd-bot) ---- */
+#ibd-bot .ibd-hero-side { min-width: 230px; max-width: 320px; }
+#ibd-bot .ibd-status-card[data-state="ready"] .ibd-status-dot { background: #2e7d32; box-shadow: 0 0 0 4px rgba(46,125,50,.14); }
+#ibd-bot .ibd-status-card[data-state="error"] .ibd-status-dot { background: #b00020; box-shadow: 0 0 0 4px rgba(176,0,32,.14); }
+#ibd-bot .ibd-model-box { margin-top: 8px; padding: 9px 12px; border: 1px solid var(--ibd-line); border-radius: 11px; background: var(--ibd-panel); font-size: 11px; }
+#ibd-bot .ibd-model-box summary { cursor: pointer; font-weight: 600; color: var(--ibd-accent); }
+#ibd-bot .ibd-model-box label { display: block; margin: 9px 0 3px; color: var(--ibd-muted); font: 600 9px 'IBM Plex Mono', monospace; letter-spacing: .08em; }
+#ibd-bot .ibd-model-box select { width: 100%; padding: 7px 8px; border: 1px solid var(--ibd-line); border-radius: 8px; background: #fff; color: var(--ibd-ink); font-size: 11px; }
+#ibd-bot .ibd-model-box p { margin: 8px 0 0; color: var(--ibd-muted); font-size: 10px; line-height: 1.5; overflow-wrap: anywhere; }
+#ibd-bot .ibd-chip { padding: 5px 10px; border: 1px dashed var(--ibd-accent); border-radius: 8px; background: transparent; color: var(--ibd-accent); font: 600 10px 'IBM Plex Mono', monospace; cursor: pointer; }
+#ibd-bot .ibd-chip.on { background: var(--ibd-accent); color: #fff; border-style: solid; }
+#ibd-bot .ibd-model-box .ibd-chip { margin-top: 10px; }
+#ibd-bot .ibd-attach-btn { cursor: pointer; opacity: 1; }
+#ibd-bot .ibd-attachment-row { flex-wrap: wrap; }
+#ibd-bot .ibd-composer button:not(:disabled) { cursor: pointer; opacity: 1; }
+#ibd-bot .ibd-composer .ibd-mic { font-size: 10px; font-weight: 600; }
+#ibd-bot .ibd-composer .ibd-mic.on { background: var(--ibd-ink); }
+#ibd-bot .ibd-chat-content { overflow-y: auto; max-height: 70vh; }
+#ibd-bot .ibd-msg { max-width: 760px; margin: 0 auto 14px; padding: 12px 15px; border: 1px solid var(--ibd-line); border-radius: 12px; background: rgba(255,255,255,.75); }
+#ibd-bot .ibd-msg-user { margin-left: auto; margin-right: 0; background: rgba(128,0,0,.05); }
+#ibd-bot .ibd-msg-who { margin-bottom: 5px; color: var(--ibd-accent); font: 600 9px 'IBM Plex Mono', monospace; letter-spacing: .12em; }
+#ibd-bot .ibd-msg-body { white-space: pre-wrap; overflow-wrap: anywhere; font-size: 13px; line-height: 1.65; }
+#ibd-bot .ibd-msg-body pre { display: block; margin: 8px 0; padding: 9px 11px; overflow-x: auto; border-radius: 8px; background: rgba(1,57,56,.06); font: 12px/1.5 'IBM Plex Mono', monospace; white-space: pre-wrap; }
+#ibd-bot .ibd-msg-body .katex-display { overflow-x: auto; overflow-y: hidden; }
+#ibd-bot .ibd-msg-actions { display: flex; gap: 6px; flex-wrap: wrap; margin-top: 9px; }
+#ibd-bot .ibd-err { max-width: 760px; margin: 0 auto 14px; padding: 10px 13px; border: 1px solid rgba(176,0,32,.35); border-radius: 10px; background: rgba(176,0,32,.06); color: #8a0019; font-size: 12px; line-height: 1.55; }
+#ibd-bot button:focus-visible, #ibd-bot select:focus-visible, #ibd-bot summary:focus-visible { outline: 2px solid var(--ibd-accent); outline-offset: 2px; }
+@media (max-width: 760px) { #ibd-bot .ibd-hero-side { max-width: none; min-width: 0; } }
+
+#ibd-bot .ibd-new-mobile { display: none; }
+@media (max-width: 760px) { #ibd-bot .ibd-new-mobile { display: inline-block; margin-left: auto; } }
