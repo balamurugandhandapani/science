@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IBD Bot | Balamurugan Dhandapani</title>
+<link rel="icon" type="image/png" sizes="16x16" href="img/logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="ibd-bot.css">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self';">
+</head>
+<body>
+
+<!-- Background -->
+<canvas id="cyber-bg"></canvas>
+
+<!-- Header Section  -->
+<div id="include-header"></div>
+
+<!-- Nav  -->
+<div id="include-nav"></div>
+
+<!-- IBD Bot  -->
+<div id="include-body"></div>
+
+<!-- Footer  -->
+<div id="include-footer"></div>
+
+<script>
+
+  async function loadInclude(id, url) {
+    const res = await fetch(url, { cache: 'no-store' });
+    if (!res.ok) throw new Error(`Failed to load ${url}: ${res.status}`);
+    document.getElementById(id).outerHTML = await res.text();
+  }
+
+  async function loadScript(src) {
+    return new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = src;
+      s.onload = resolve;
+      s.onerror = () => reject(new Error(`Failed to load ${src}`));
+      document.body.appendChild(s);
+    });
+  }
+
+  (async () => {
+    await Promise.all([
+      loadInclude('include-header', 'header.html'),
+      loadInclude('include-nav', 'nav.html'),
+      loadInclude('include-body', 'ibd-bot-body.html'),
+      loadInclude('include-footer', 'footer.html'),
+    ]);
+    await loadScript('common.js');
+    await loadScript('ibd-brain.js');
+    await loadScript('ibd-bot.js');
+  })().catch(err => {
+    console.error(err);
+    document.body.insertAdjacentHTML('afterbegin',
+      `<p style="color:#f66;padding:1rem;font-family:monospace">
+        Could not load page sections: ${err.message}.<br>
+        This page must be served over http(s):// (run start_server.bat or start_server.sh
+        in this folder, then open http://localhost:8000) — it will not work if opened
+        directly as a file:// path.
+      </p>`);
+  });
+</script>
+</body>
+</html>
