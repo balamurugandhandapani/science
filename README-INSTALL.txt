@@ -61,3 +61,18 @@ TESTED
 - Real Chromium (headless) on your site's files with the site's strict CSP: engine loads, answers render,
   Word (.docx opens in python-docx) and .tex downloads work, chat survives reload, phone width has no overflow.
 - NOT tested: a real Android Chrome, microphone and speech output, GitHub Pages itself.
+
+
+=== v1.1  SKILLS PACK, BATCH 1 (skills 1-25 of 350) ===
+NEW FILE: ibd-skills.js  (upload beside ibd-brain.js). CHANGED: ibd-brain.js, IBDBot.html.
+- Greeting now starts: "வணக்கம் I am IBD Bot Assistant".
+- Skills 1-25: research planning (1-10), literature review (11-20), first writing skills (21-25).
+- Language assistant: English, Tamil and Thanglish spelling/grammar correction; formal letter formatter.
+- Self-test: 45/45 pass. Skills are template/rule based and invent no papers, DOIs or data.
+- Next batch: skills 26-50. Send the physics books (as text) before the physics module (skills 36-50).
+
+=== v1.1  SKILLS PACK, BATCH 2 (skills 26-50 of 350) ===
+NEW FILE: ibd-skills2.js (upload beside ibd-skills.js). CHANGED: IBDBot.html (loads it), README-INSTALL.txt.
+- 26-35 scientific writing: review paragraph, methods, procedure, derivation, results, conclusion, future scope, acknowledgement, language refinement, academic grammar.
+- 36-50 physics/maths: equation plan, identity check (numeric), dimensional analysis (real), unit conversion and calculation (engine), parameter identification, model plan, derivation (engine), interpretation, error propagation (real), uncertainty (Type A, Student t), statistics, experimental validation, theory vs experiment, assumption check.
+- Self-test 51/51. Physics-book notes are NOT yet added (books not received).

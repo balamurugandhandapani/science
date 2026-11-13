@@ -7,7 +7,7 @@
 */
 (function (root) {
   'use strict';
-  const VERSION = '1.0';
+  const VERSION = '1.1';
   /* ===== core helpers ===== */
   const NA = 6.02214076e23;
   const hasTamil = (s) => /[\u0B80-\u0BFF]/.test(s);
@@ -1302,7 +1302,7 @@ r = fzero(@(x) x.^2 - 2, [0 2]);                   % root of x^2 - 2
 • எப்படி இருக்கிறீர்கள்? (eppaṭi irukkiṟīrkaḷ?): how are you?
 • நன்றாக இருக்கிறேன் (naṉṟāka irukkiṟēṉ): I am fine
 • மன்னிக்கவும் (maṉṉikkavum): sorry / excuse me
-I cannot check Tamil grammar automatically; this engine contains no Tamil language model.` },
+basic Tamil, English and Thanglish grammar checks come from the skills pack automatically; this engine contains no Tamil language model.` },
   ];
   KB.forEach((e) => { e.en = e.en.replace(/~~~/g, '```'); if (e.ta) e.ta = e.ta.replace(/~~~/g, '```'); });
   /* ===== helpers for modules ===== */
@@ -1929,7 +1929,7 @@ I cannot check Tamil grammar automatically; this engine contains no Tamil langua
     if (!q && !files.length) return done('Type a question or a calculation.', 'none', 'none');
     if (GREET.test(q)) {
       T('Plan', 'greeting'); const thanks = /thank|thx|\u0BA8\u0BA9\u0BCD\u0BB1\u0BBF/i.test(q), bye = /^bye/i.test(q);
-      return done(tam ? (thanks ? 'மகிழ்ச்சி! வேறு கேள்விகள் இருந்தால் கேளுங்கள்.' : 'வணக்கம்! நான் IBD Bot. இயற்பியல், கணிதம், வேதியியல் கணக்குகளையும் அறிவியல் குறிப்புகளையும் இந்த இணையப்பக்கத்திற்குள்ளேயே செய்கிறேன். "capacity" என்று கேட்டால் என் திறன்களைக் கூறுவேன்.') : (thanks ? 'You are welcome. Ask me anything else in physics, maths or chemistry.' : bye ? 'Goodbye!' : 'Hello! I am IBD Bot. I calculate and explain physics, mathematics and chemistry entirely inside this web page, with no model download. Try: "differentiate x^2 sin x", "balance Fe + O2 -> Fe2O3", "convert 500 nm to eV", or ask "capacity" to see everything I can do.'), 'knowledge', 'greeting');
+      return done(tam ? (thanks ? 'மகிழ்ச்சி! வேறு கேள்விகள் இருந்தால் கேளுங்கள்.' : 'வணக்கம் I am IBD Bot Assistant. இயற்பியல், கணிதம், வேதியியல் கணக்குகளையும் அறிவியல் குறிப்புகளையும் இந்த இணையப்பக்கத்திற்குள்ளேயே செய்கிறேன். "capacity" என்று கேட்டால் என் திறன்களைக் கூறுவேன்.') : (thanks ? 'You are welcome. Ask me anything else in physics, maths or chemistry.' : bye ? 'Goodbye!' : 'வணக்கம் I am IBD Bot Assistant. I calculate and explain physics, mathematics and chemistry entirely inside this web page, with no model download. Try: "differentiate x^2 sin x", "balance Fe + O2 -> Fe2O3", "convert 500 nm to eV", or ask "capacity" to see everything I can do.'), 'knowledge', 'greeting');
     }
     if (CAP_RE.test(q)) { T('Plan', 'describe my own capacity (live counts + self-test)'); return done(capacityText(tam), 'computed', 'capacity'); }
     const cands = MODULES.map((m) => { let s = 0; try { s = m.detect(q, ctx, files) || 0; } catch (e) { s = 0; } return { m, s }; }).filter((c) => c.s > 0).sort((a, b) => b.s - a.s);
@@ -1979,12 +1979,13 @@ I cannot check Tamil grammar automatically; this engine contains no Tamil langua
       '\u2022 I cannot answer open-ended questions, write essays or chat freely: if no module matches, I say so.',
       '\u2022 Notes are a fixed set; a topic not in them is not answered. Calculations are only as good as the numbers and units you give.',
       '\u2022 Integration covers the rule table (polynomials, exp/sin/cos/tan, 1/(quadratic), by-parts with polynomials, ln x, u\u2032/u); anything else is reported as not found, or computed numerically if you give limits.',
-      '\u2022 Tamil: I understand Tamil greetings and Tamil keywords for ' + c.kbTamil + ' notes; I cannot check Tamil grammar. English checks are rule-based and basic.',
+      ...EXTRA_CAP.map((f) => f()), '\u2022 Tamil: I understand Tamil greetings and Tamil keywords for ' + c.kbTamil + ' notes; I cannot check Tamil grammar. English checks are rule-based and basic.',
       '\u2022 I cannot read images, PDF, Word or Excel files; plain text/CSV only.',
       '', 'Self-test just now: **' + st.passed + ' of ' + st.total + ' internal checks passed** (' + st.ms + ' ms).' + (st.failed.length ? ' Failed: ' + st.failed.join(', ') : ''));
   }
 
   /* ===== self-test ===== */
+  const EXTRA_CAP = [];
   const TESTS = [
     ['calculator', () => thinkCore('calculate 2+3*4^2/8-1', {}).answer.includes('**7**')],
     ['degrees', () => thinkCore('sin(30\u00B0)', {}).answer.includes('0.5')],
@@ -2128,7 +2129,7 @@ I cannot check Tamil grammar automatically; this engine contains no Tamil langua
     ]);
   }
 
-  const API = { think, capacity, selfTest, texToHtml, makeDocx, version: VERSION, modules: () => MODULES.map((m) => ({ id: m.id, label: m.label, example: m.example })), _internal: { parse, simp, ev, diff, integ, tidy, balanceEquation, parseFormula, massOf, convertUnit, FORMULAS, KB, EL, kbRank, grammarCheck, describe } };
+  const API = { register: add, addTest: (n, f) => { TESTS.push([n, f]); selfTestCache = null; }, addCapacity: (f) => EXTRA_CAP.push(f), think, capacity, selfTest, texToHtml, makeDocx, version: VERSION, modules: () => MODULES.map((m) => ({ id: m.id, label: m.label, example: m.example })), _internal: { parse, simp, ev, diff, integ, tidy, balanceEquation, parseFormula, massOf, convertUnit, FORMULAS, KB, EL, kbRank, grammarCheck, describe } };
 
   if (typeof module !== 'undefined' && module.exports) module.exports = API; else root.IBDBrain = API;
 })(typeof window !== 'undefined' ? window : globalThis);
