@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="ta">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>வலை மின்னஞ்சல் | Balamurugan Dhandapani</title>
+<link rel="icon" type="image/png" sizes="16x16" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=Noto+Sans+Tamil:wght@400;500;600;700&display=swap" rel="stylesheet">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'self'; base-uri 'self'; form-action https://accounts.zoho.in;">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<style>
+  :root {
+    --bg-light: #f5f5f5;
+    --nav-bg: rgba(255, 255, 255, 0.8);
+    --accent: #800000;
+    --text-dark: #013938;
+    --panel: rgba(255, 255, 255, 0.92);
+    --line: rgba(1, 57, 56, 0.14);
+    --gold: #b8860b;
+    --porul-bg: rgba(31, 58, 95, 0.06);
+    --porul-color: #1f3a5f;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100vh;
+    font-family: 'Poppins', 'Noto Sans Tamil', sans-serif;
+    background: var(--bg-light);
+    color: var(--text-dark);
+    overflow-x: hidden;
+    position: relative;
+  }
+
+  /* ===== Cyber background (same as main site) ===== */
+  canvas#cyber-bg {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -1;
+  }
+
+  /* ===== Header — same structure/theme as main site ===== */
+  header {
+    background-color: var(--nav-bg);
+    color: var(--text-dark);
+    padding: 10px;
+    position: relative;
+    z-index: 10;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  }
+  .header-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+  .logo {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-bottom: 0.5rem;
+  }
+  .header-text h1 {
+    margin: 5px 0;
+    font-family: 'Noto Sans Tamil', 'Poppins', sans-serif;
+    font-size: 1rem;
+    font-weight: bold;
+    text-align: center;
+    color: var(--text-dark);
+  }
+  .header-text h1.en { font-family: 'Poppins', sans-serif; }
+  .site-tagline {
+    margin: 8px 0 0;
+    text-align: center;
+    line-height: 1.45;
+    font-family: 'IBM Plex Mono', monospace;
+  }
+  .site-tagline span {
+    display: block;
+    color: var(--accent);
+    font-style: italic;
+  }
+  .site-tagline [lang="ta"] {
+    font-family: 'Noto Sans Tamil', sans-serif;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+  .site-tagline .tagline-en {
+    font-size: 0.68rem;
+    font-weight: 400;
+    margin-top: 2px;
+    text-transform: uppercase;
+    letter-spacing: .4px;
+  }
+
+  /* ===== Thirukkural rotator (synced across all visitors by clock time) ===== */
+  .kural-box {
+    position: relative;
+    z-index: 5;
+    margin: 20px auto 0;
+    width: 100%;
+    max-width: 480px;
+    text-align: center;
+    padding: 0 16px;
+  }
+  .kural-box .kno {
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: var(--gold);
+    letter-spacing: .5px;
+    margin-bottom: 6px;
+  }
+  .kural-box .ktext {
+    font-family: 'Noto Sans Tamil', sans-serif;
+    font-weight: 600;
+    color: var(--text-dark);
+    line-height: 1.5;
+    margin: 0 0 8px;
+    transition: opacity .4s ease;
+  }
+  .kural-box .ktext .l1,
+  .kural-box .ktext .l2 {
+    display: block;
+    white-space: nowrap;
+    font-size: clamp(10px, 4.6vw, 17px);
+  }
+  .kural-box .kporul {
+    font-family: 'Noto Sans Tamil', sans-serif;
+    font-size: 13px;
+    color: var(--porul-color);
+    background: var(--porul-bg);
+    border-left: 3px solid var(--porul-color);
+    border-radius: 6px;
+    padding: 10px 14px;
+    line-height: 1.55;
+    text-align: left;
+    transition: opacity .4s ease;
+  }
+  .kural-box .kporul b {
+    color: var(--accent);
+    font-weight: 700;
+  }
+  .fade { opacity: 0; }
+
+  /* ===== Mail sign-in section ===== */
+  main {
+    position: relative;
+    z-index: 5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 36px 20px 30px;
+  }
+  .card {
+    background: var(--panel);
+    width: 100%;
+    max-width: 380px;
+    padding: 40px 34px;
+    border-radius: 16px;
+    border: 1px solid var(--line);
+    box-shadow: 0 10px 34px rgba(1, 57, 56, 0.12);
+    text-align: center;
+  }
+  a.btn {
+    display: block;
+    background: var(--accent);
+    color: #fff;
+    text-decoration: none;
+    padding: 13px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 15px;
+    transition: opacity .15s ease;
+  }
+  a.btn:hover { opacity: .9; }
+
+  .platform-note {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 0 10px;
+    text-align: left;
+  }
+  .platform-note .zoho-logo {
+    width: 30px;
+    height: 30px;
+    flex-shrink: 0;
+  }
+  .platform-note p {
+    margin: 0;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 10.5px;
+    line-height: 1.5;
+    color: rgba(1, 57, 56, 0.55);
+  }
+
+  footer {
+    position: relative;
+    z-index: 5;
+    text-align: center;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 11px;
+    color: rgba(1, 57, 56, 0.45);
+    padding: 10px 20px 30px;
+  }
+</style>
+</head>
+<body>
+
+  <canvas id="cyber-bg"></canvas>
+
+  <header>
+    <div class="header-content">
+      <img src="logo.png" alt="Logo" class="logo">
+      <div class="header-text">
+        <h1 lang="ta">பாலமுருகன் தண்டபாணி (இ.பா.த.)</h1>
+        <h1 class="en">BALAMURUGAN DHANDAPANI (IBD)</h1>
+        <p class="site-tagline">
+          <span lang="ta">வலை மின்னஞ்சல்</span>
+          <span class="tagline-en">Web Mail</span>
+        </p>
+      </div>
+    </div>
+  </header>
+
+  <div class="kural-box">
+    <div class="kno" id="kno">&nbsp;</div>
+    <p class="ktext" id="ktext"><span class="l1"></span><span class="l2"></span></p>
+    <p class="kporul" id="kporul"></p>
+  </div>
+
+  <main>
+    <div class="card">
+      <a class="btn" href="https://accounts.zoho.in/signin?servicename=ZohoHome&signupurl=https://www.zoho.com/signup.html">Sign in to Mail</a>
+    </div>
+  </main>
+
+  <footer>
+    <div class="platform-note" lang="ta">
+      <img src="zoho-logo.png" alt="Zoho" class="zoho-logo">
+      <p>
+        குறிப்பு: இந்த வலை மின்னஞ்சல் சேவை Zoho Mail தளத்தின் வழியே இயங்குகிறது.<br>
+        <span style="font-family:'Poppins',sans-serif">Note: This mail service runs on the Zoho Mail platform.</span>
+      </p>
+    </div>
+    &copy; 2026 Balamurugan Dhandapani &ndash; All rights reserved.
+  </footer>
+
+  <script>
+    /* ===== Cyber background — same node-network animation as the main site ===== */
+    (function(){
+      const canvas = document.getElementById('cyber-bg');
+      const ctx = canvas.getContext('2d');
+      let width = canvas.width = window.innerWidth;
+      let height = canvas.height = window.innerHeight;
+
+      const nodes = [];
+      const nodeCount = 80;
+
+      for (let i = 0; i < nodeCount; i++) {
+        nodes.push({
+          x: Math.random() * width,
+          y: Math.random() * height,
+          vx: (Math.random() - 0.5) * 0.5,
+          vy: (Math.random() - 0.5) * 0.5
+        });
+      }
+
+      function draw() {
+        ctx.fillStyle = "#f5f5f5";
+        ctx.fillRect(0, 0, width, height);
+
+        for (let i = 0; i < nodeCount; i++) {
+          let node = nodes[i];
+          ctx.fillStyle = "#003d3d";
+          ctx.beginPath();
+          ctx.arc(node.x, node.y, 2, 0, Math.PI * 2);
+          ctx.fill();
+
+          for (let j = i + 1; j < nodeCount; j++) {
+            let node2 = nodes[j];
+            let dist = Math.hypot(node.x - node2.x, node.y - node2.y);
+            if (dist < 120) {
+              ctx.strokeStyle = `rgba(0,61,61,${1 - dist / 120})`;
+              ctx.lineWidth = 1;
+              ctx.beginPath();
+              ctx.moveTo(node.x, node.y);
+              ctx.lineTo(node2.x, node2.y);
+              ctx.stroke();
+            }
+          }
+
+          node.x += node.vx;
+          node.y += node.vy;
+
+          if (node.x < 0 || node.x > width) node.vx *= -1;
+          if (node.y < 0 || node.y > height) node.vy *= -1;
+        }
+
+        requestAnimationFrame(draw);
+      }
+      draw();
+
+      window.addEventListener('resize', () => {
+        width = canvas.width = window.innerWidth;
+        height = canvas.height = window.innerHeight;
+      });
+    })();
+
+    /* ===== Thirukkural rotator =====
+       - Flows in fixed order, kural 1 through kural 1330, then wraps back to 1.
+       - The kural shown is derived from real clock time (UTC epoch seconds),
+         not from when this particular visitor loaded the page — so every
+         visitor looking at the site at the same moment sees the same kural.
+       - Changes every 25 seconds (15s + the extra 10s). */
+    const INTERVAL_SECONDS = 25;
+
+    let kurals = [];
+    let currentIndex = -1;
+    const knoEl = document.getElementById('kno');
+    const ktextEl = document.getElementById('ktext');
+    const l1El = ktextEl.querySelector('.l1');
+    const l2El = ktextEl.querySelector('.l2');
+    const kporulEl = document.getElementById('kporul');
+
+    function indexForNow() {
+      const epochSeconds = Math.floor(Date.now() / 1000);
+      const slot = Math.floor(epochSeconds / INTERVAL_SECONDS);
+      return slot % kurals.length;
+    }
+
+    function renderKural(i) {
+      const k = kurals[i];
+      knoEl.textContent = `குறள் #${k.no} · ${k.c}`;
+      l1El.textContent = k.l1;
+      l2El.textContent = k.l2;
+      kporulEl.innerHTML = `<b>பொருள்:</b> ${k.p}`;
+    }
+
+    function tick() {
+      const i = indexForNow();
+      if (i === currentIndex) return;
+      [ktextEl, kporulEl, knoEl].forEach(el => el.classList.add('fade'));
+      setTimeout(() => {
+        currentIndex = i;
+        renderKural(i);
+        [ktextEl, kporulEl, knoEl].forEach(el => el.classList.remove('fade'));
+      }, 350);
+    }
+
+    fetch('kurals.json', { cache: 'no-store' })
+      .then(r => r.json())
+      .then(data => {
+        kurals = data;
+        currentIndex = indexForNow();
+        renderKural(currentIndex);
+        setInterval(tick, 1000); // check every second; only re-renders when the slot actually changes
+      })
+      .catch(err => {
+        knoEl.textContent = '';
+        l1El.textContent = 'திருக்குறள் தரவை ஏற்ற முடியவில்லை.';
+        l2El.textContent = '';
+        kporulEl.textContent = 'This page must be served over http(s):// — it will not load kurals.json from a file:// path.';
+        console.error(err);
+      });
+  </script>
+
+</body>
+</html>
