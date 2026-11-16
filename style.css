@@ -771,3 +771,25 @@ select.insert-el {
   .calc-tabs { gap: 4px; }
   .calc-tab { padding: 8px 12px; font-size: 11px; }
 }
+
+/* ==============================
+   PHYSICS TOOLS
+============================== */
+.calc-grid select {
+  font-family: 'IBM Plex Mono', monospace; font-size: 13px; padding: 8px 10px;
+  border: 1px solid var(--line-strong); border-radius: 4px; background: #fff; color: var(--text-dark);
+  width: 100%; box-sizing: border-box;
+}
+.calc-grid select:focus { outline: none; border-color: var(--accent); }
+.plot-wrap { margin-top: 20px; }
+.plot-wrap canvas {
+  display: block; width: 100%; max-width: 760px; height: auto;
+  border: 1px solid var(--line); border-radius: 6px; background: #fff;
+}
+.color-swatch {
+  display: inline-block; width: 14px; height: 14px; border-radius: 3px;
+  border: 1px solid var(--line-strong); vertical-align: -2px;
+}
+.const-table { min-width: 560px; }
+.const-table td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
+.const-table td:nth-child(3) { font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }

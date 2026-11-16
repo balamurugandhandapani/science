@@ -1,0 +1,216 @@
+<main class="explorer-wrap" id="explorer" name="top">
+  <div class="explorer-intro">
+    <p class="eyebrow">Physics Tool &middot; Optics, X-ray Diffraction &amp; Mechanics</p>
+    <h2>Physics Tools</h2>
+    <p>Seven quick calculators for physics and materials-science students &mdash; convert photon energy and wavelength, work out Bragg diffraction and Scherrer crystallite size, trace a projectile, solve Ohm&rsquo;s law, convert units, and look up fundamental constants.</p>
+  </div>
+
+  <div class="calc-tabs" id="calcTabs">
+    <button class="calc-tab active" data-tab="photon">Photon Energy</button>
+    <button class="calc-tab" data-tab="bragg">Bragg&rsquo;s Law</button>
+    <button class="calc-tab" data-tab="scherrer">Scherrer Size</button>
+    <button class="calc-tab" data-tab="projectile">Projectile Motion</button>
+    <button class="calc-tab" data-tab="ohm">Ohm&rsquo;s Law</button>
+    <button class="calc-tab" data-tab="units">Unit Converter</button>
+    <button class="calc-tab" data-tab="constants">Constants</button>
+  </div>
+
+  <!-- ============ PHOTON ENERGY CONVERTER ============ -->
+  <div class="calc-panel active" id="panel-photon">
+    <div class="calc-card">
+      <h3>Photon Energy &harr; Wavelength &harr; Frequency</h3>
+      <p class="calc-formula">E = hc / &lambda; = h&nu; &nbsp;&middot;&nbsp; hc = 1239.842 eV&middot;nm</p>
+      <div class="calc-grid">
+        <label><span>Value</span>
+          <input type="number" step="any" id="ph-value" value="550">
+        </label>
+        <label><span>Unit</span>
+          <select id="ph-unit">
+            <option value="nm" selected>nm &ndash; wavelength</option>
+            <option value="A">&Aring; &ndash; wavelength</option>
+            <option value="um">&micro;m &ndash; wavelength</option>
+            <option value="eV">eV &ndash; energy</option>
+            <option value="keV">keV &ndash; energy</option>
+            <option value="J">J &ndash; energy</option>
+            <option value="THz">THz &ndash; frequency</option>
+            <option value="GHz">GHz &ndash; frequency</option>
+            <option value="cm1">cm&#8315;&sup1; &ndash; wavenumber</option>
+          </select>
+        </label>
+      </div>
+      <button class="calc-btn" id="ph-btn">Convert</button>
+      <div class="calc-result" id="ph-result"></div>
+      <p class="calc-note">Type any one quantity and choose its unit &mdash; all the others are calculated. For a semiconductor, enter the band gap in eV to get the absorption-edge wavelength. Constants use the exact SI (2019) values of h, c, e and N<sub>A</sub>. Region boundaries (e.g. visible = 380&ndash;750 nm) are conventional and differ slightly between sources.</p>
+    </div>
+  </div>
+
+  <!-- ============ BRAGG'S LAW ============ -->
+  <div class="calc-panel" id="panel-bragg">
+    <div class="calc-card">
+      <h3>Bragg&rsquo;s Law (X-ray Diffraction)</h3>
+      <p class="calc-formula">n&lambda; = 2d sin&theta; &nbsp;&middot;&nbsp; a = d&radic;(h&sup2;+k&sup2;+l&sup2;) (cubic)</p>
+      <div class="calc-grid">
+        <label><span>Calculate</span>
+          <select id="br-mode">
+            <option value="d" selected>d-spacing from 2&theta;</option>
+            <option value="tt">2&theta; from d-spacing</option>
+          </select>
+        </label>
+        <label><span>X-ray source (preset)</span>
+          <select id="br-preset">
+            <option value="1.541838" selected>Cu K&alpha; (avg) &ndash; 1.541838 &Aring;</option>
+            <option value="1.540562">Cu K&alpha;1 &ndash; 1.540562 &Aring;</option>
+            <option value="1.544390">Cu K&alpha;2 &ndash; 1.544390 &Aring;</option>
+            <option value="0.710730">Mo K&alpha; (avg) &ndash; 0.710730 &Aring;</option>
+            <option value="1.790260">Co K&alpha; (avg) &ndash; 1.790260 &Aring;</option>
+            <option value="2.291002">Cr K&alpha; (avg) &ndash; 2.291002 &Aring;</option>
+            <option value="custom">Custom wavelength</option>
+          </select>
+        </label>
+        <label><span>Wavelength &lambda; (&Aring;)</span>
+          <input type="number" step="any" id="br-lambda" value="1.541838">
+        </label>
+        <label><span>Order n</span>
+          <input type="number" step="1" min="1" id="br-n" value="1">
+        </label>
+        <label id="br-tt-wrap"><span>Peak position 2&theta; (degrees)</span>
+          <input type="number" step="any" id="br-tt" value="38.2">
+        </label>
+        <label id="br-d-wrap" style="display:none;"><span>d-spacing (&Aring;)</span>
+          <input type="number" step="any" id="br-d" value="2.35">
+        </label>
+      </div>
+      <div class="calc-grid">
+        <label><span>h (optional, cubic a)</span><input type="number" step="1" id="br-h" placeholder="1"></label>
+        <label><span>k</span><input type="number" step="1" id="br-k" placeholder="1"></label>
+        <label><span>l</span><input type="number" step="1" id="br-l" placeholder="1"></label>
+      </div>
+      <button class="calc-btn" id="br-btn">Calculate</button>
+      <div class="calc-result" id="br-result"></div>
+      <p class="calc-note">Enter (h k l) only if the material is cubic and you want the lattice parameter a. Q = 2&pi;/d is the scattering vector. Preset wavelengths are the standard Bearden (1967) K&alpha; lines; the &ldquo;avg&rdquo; entries are the K&alpha;1:K&alpha;2 = 2:1 intensity-weighted means used by NIST. Choose &ldquo;Custom&rdquo; or edit the wavelength box for any other source.</p>
+    </div>
+  </div>
+
+  <!-- ============ SCHERRER ============ -->
+  <div class="calc-panel" id="panel-scherrer">
+    <div class="calc-card">
+      <h3>Scherrer Equation &ndash; Crystallite Size</h3>
+      <p class="calc-formula">D = K&lambda; / (&beta; cos&theta;) &nbsp;&middot;&nbsp; &beta;<sub>corr</sub> = &radic;(&beta;<sub>obs</sub>&sup2; &minus; &beta;<sub>inst</sub>&sup2;)</p>
+      <div class="calc-grid">
+        <label><span>Shape factor K</span>
+          <input type="number" step="any" id="sc-k" value="0.9">
+        </label>
+        <label><span>Wavelength &lambda; (&Aring;)</span>
+          <input type="number" step="any" id="sc-lambda" value="1.541838">
+        </label>
+        <label><span>Peak position 2&theta; (degrees)</span>
+          <input type="number" step="any" id="sc-tt" value="38.2">
+        </label>
+        <label><span>Observed FWHM &beta; (degrees 2&theta;)</span>
+          <input type="number" step="any" id="sc-beta" value="0.25">
+        </label>
+        <label><span>Instrumental broadening (degrees, optional)</span>
+          <input type="number" step="any" id="sc-inst" value="0">
+        </label>
+      </div>
+      <button class="calc-btn" id="sc-btn">Calculate</button>
+      <div class="calc-result" id="sc-result"></div>
+      <p class="calc-note">&beta; is the full width at half maximum of the diffraction peak, entered in degrees of 2&theta; (it is converted to radians internally). K &asymp; 0.9 for spherical crystallites. Peak width also depends on strain and instrument, so the result is a lower bound on size; the equation is meaningful only for crystallites below roughly 100&ndash;200 nm. The correction assumes Gaussian peak shapes.</p>
+    </div>
+  </div>
+
+  <!-- ============ PROJECTILE ============ -->
+  <div class="calc-panel" id="panel-projectile">
+    <div class="calc-card">
+      <h3>Projectile Motion</h3>
+      <p class="calc-formula">x = v&#8320;cos&alpha;&middot;t &nbsp;&middot;&nbsp; y = h&#8320; + v&#8320;sin&alpha;&middot;t &minus; &frac12;gt&sup2;</p>
+      <div class="calc-grid">
+        <label><span>Launch speed v&#8320; (m/s)</span>
+          <input type="number" step="any" id="pr-v" value="30">
+        </label>
+        <label><span>Launch angle &alpha; (degrees)</span>
+          <input type="number" step="any" id="pr-a" value="45">
+        </label>
+        <label><span>Launch height h&#8320; (m)</span>
+          <input type="number" step="any" id="pr-h" value="0">
+        </label>
+        <label><span>Gravity g (m/s&sup2;)</span>
+          <input type="number" step="any" id="pr-g" value="9.80665">
+        </label>
+      </div>
+      <button class="calc-btn" id="pr-btn">Calculate &amp; Plot</button>
+      <div class="calc-result" id="pr-result"></div>
+      <div class="plot-wrap"><canvas id="pr-canvas" width="760" height="320"></canvas></div>
+      <p class="calc-note">Ideal motion in a vacuum &mdash; air resistance is ignored, and the ground is flat at y = 0. Use g = 1.62 for the Moon or 3.73 for Mars (NASA mean surface gravity). Angles range from &minus;90&deg; (straight down) to 90&deg; (straight up).</p>
+    </div>
+  </div>
+
+  <!-- ============ OHM'S LAW ============ -->
+  <div class="calc-panel" id="panel-ohm">
+    <div class="calc-card">
+      <h3>Ohm&rsquo;s Law &amp; Power</h3>
+      <p class="calc-formula">V = IR &nbsp;&middot;&nbsp; P = VI = I&sup2;R = V&sup2;/R</p>
+      <div class="calc-grid">
+        <label><span>Voltage V (volts)</span><input type="number" step="any" id="oh-v" value="12"></label>
+        <label><span>Current I (amperes)</span><input type="number" step="any" id="oh-i"></label>
+        <label><span>Resistance R (ohms)</span><input type="number" step="any" id="oh-r" value="4"></label>
+        <label><span>Power P (watts)</span><input type="number" step="any" id="oh-p"></label>
+      </div>
+      <button class="calc-btn" id="oh-btn">Solve</button>
+      <button class="calc-btn-sm" id="oh-clear" type="button">Clear all</button>
+      <div class="calc-result" id="oh-result"></div>
+
+      <h3 style="margin-top:30px;">Resistor Combinations</h3>
+      <p class="calc-formula">R<sub>series</sub> = &Sigma;R &nbsp;&middot;&nbsp; 1/R<sub>parallel</sub> = &Sigma;(1/R)</p>
+      <div class="calc-grid">
+        <label><span>Resistor values in ohms (separate with commas)</span>
+          <input type="text" id="rs-list" value="100, 220, 330">
+        </label>
+      </div>
+      <button class="calc-btn" id="rs-btn">Combine</button>
+      <div class="calc-result" id="rs-result"></div>
+      <p class="calc-note">Fill in exactly two of the four boxes (voltage, current, resistance, power) and leave the other two empty &mdash; the page calculates the rest. Use the resistor tool to find the equivalent resistance of any number of resistors.</p>
+    </div>
+  </div>
+
+  <!-- ============ UNIT CONVERTER ============ -->
+  <div class="calc-panel" id="panel-units">
+    <div class="calc-card">
+      <h3>Unit Converter</h3>
+      <p class="calc-formula">Length &middot; Energy &middot; Pressure &middot; Mass &middot; Angle &middot; Temperature &middot; Magnetic H &amp; B</p>
+      <div class="calc-grid">
+        <label><span>Quantity</span><select id="un-cat"></select></label>
+        <label><span>Value</span><input type="number" step="any" id="un-value" value="1"></label>
+        <label><span>From</span><select id="un-from"></select></label>
+        <label><span>To</span><select id="un-to"></select></label>
+      </div>
+      <button class="calc-btn" id="un-btn">Convert</button>
+      <div class="calc-result" id="un-result"></div>
+      <p class="calc-note">Oersted &harr; A/m uses 1 Oe = 1000/(4&pi;) A/m. Gauss &harr; tesla uses 1 G = 10&#8315;&#8308; T. Calories are the thermochemical calorie (4.184 J), and mmHg is the conventional value (133.322387 Pa).</p>
+    </div>
+  </div>
+
+  <!-- ============ CONSTANTS ============ -->
+  <div class="calc-panel" id="panel-constants">
+    <div class="calc-card">
+      <h3>Fundamental Constants</h3>
+      <p class="calc-formula">SI 2019 exact values &middot; CODATA 2022 for measured values</p>
+      <div class="calc-grid">
+        <label><span>Search by name or symbol</span>
+          <input type="text" id="cs-search" placeholder="e.g. Planck, k_B, electron" autocomplete="off">
+        </label>
+      </div>
+      <div class="table-scroll">
+        <table class="calc-table const-table">
+          <thead><tr><th>Constant</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Type</th></tr></thead>
+          <tbody id="cs-rows"></tbody>
+        </table>
+      </div>
+      <p class="calc-note">&ldquo;Exact&rdquo; values are fixed by definition of the SI units. For measured values, the number in parentheses is the one-standard-deviation uncertainty in the last digits (NIST convention), and &ldquo;&hellip;&rdquo; means the exact value continues. Source: 2022 CODATA recommended values (NIST SP 961, the latest release). Future CODATA releases may adjust the measured values slightly.</p>
+    </div>
+  </div>
+
+  <p class="sources-note">
+    These tools are meant for study and quick checks. Always confirm results against your textbook or lab manual before using them in a report, and keep track of the units you enter.
+  </p>
+</main>

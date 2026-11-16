@@ -23,7 +23,7 @@ INSTALL FROM A PHONE (GitHub Pages)
 1. Open the science repository on github.com in Chrome.
 2. Add file -> Upload files. Select the 6 files above, commit.
    (If GitHub says a file already exists, uploading with the same name replaces it.)
-3. Wait about a minute, open science.qbcd.in/IBDBot.html. The status card should say
+3. Wait about a minute, open www.balamurugandhandapani.in/IBDBot.html. The status card should say
    "Built-in engine ready - 14 modules - self-test 39/39".
 If it says "Engine file missing", ibd-brain.js is not in the same folder as ibd-bot.js.
 Hard-refresh the page after uploading (browsers cache old script files).
@@ -76,3 +76,20 @@ NEW FILE: ibd-skills2.js (upload beside ibd-skills.js). CHANGED: IBDBot.html (lo
 - 26-35 scientific writing: review paragraph, methods, procedure, derivation, results, conclusion, future scope, acknowledgement, language refinement, academic grammar.
 - 36-50 physics/maths: equation plan, identity check (numeric), dimensional analysis (real), unit conversion and calculation (engine), parameter identification, model plan, derivation (engine), interpretation, error propagation (real), uncertainty (Type A, Student t), statistics, experimental validation, theory vs experiment, assumption check.
 - Self-test 51/51. Physics-book notes are NOT yet added (books not received).
+
+
+=== PHYSICS TOOLS PAGE (new) ===
+NEW FILES: Physics.html, physics-body.html, physics.js
+CHANGED:   nav.html (adds "Physics Tools" link), style.css (physics block appended at the end), sitemap.xml
+Tabs: Photon Energy, Bragg's Law, Scherrer Size, Projectile Motion, Ohm's Law (+ resistors),
+      Unit Converter, Constants. Same layout/CSP/header/footer as the other pages; no external requests.
+
+=== PHYSICS TOOLS: DATA SOURCES (verified 16 Nov 2026) ===
+- Fundamental constants: 2022 CODATA recommended values (NIST SP 961 / SP 959), the latest release.
+  Exact SI-2019 constants (c, h, e, kB, NA) and the values derived from them (R, F, sigma, hbar, hc) are exact.
+  Measured values (G, eps0, mu0, me, mp, mn, u, alpha, Rinf, a0, muB) were checked digit-by-digit against NIST.
+- X-ray lines: Bearden (1967), Rev. Mod. Phys. 39, 78 (Cu Ka1 1.540562, Ka2 1.544390; Mo Ka1 0.709300, Ka2 0.713590;
+  Co Ka1 1.788965, Ka2 1.792850). Weighted means Cu 1.541838, Co 1.790260, Cr 2.291002 follow NIST Tech. Note 461.
+- Unit factors: exact by definition (inch, foot, pound, atm, calorie 4.184, kWh, erg) or conventional (mmHg, psi, Oe).
+- Gravity: standard g = 9.80665 m/s2 (exact); Moon 1.62 and Mars 3.73 m/s2 from the NASA Planetary Fact Sheets.
+- Spectral-region boundaries (X-ray / UV / visible 380-750 nm / IR / microwave / radio) are conventional, not exact.
