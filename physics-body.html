@@ -194,19 +194,20 @@
   <div class="calc-panel" id="panel-constants">
     <div class="calc-card">
       <h3>Fundamental Constants</h3>
-      <p class="calc-formula">SI 2019 exact values &middot; CODATA 2022 for measured values</p>
+      <p class="calc-formula">Every value on the 2022 CODATA wall chart (NIST SP 961) and wallet card (SP 959)</p>
       <div class="calc-grid">
         <label><span>Search by name or symbol</span>
           <input type="text" id="cs-search" placeholder="e.g. Planck, k_B, electron" autocomplete="off">
         </label>
       </div>
+      <p class="calc-note" id="cs-count" style="margin:0 0 8px"></p>
       <div class="table-scroll">
         <table class="calc-table const-table">
           <thead><tr><th>Constant</th><th>Symbol</th><th>Value</th><th>Unit</th><th>Type</th></tr></thead>
           <tbody id="cs-rows"></tbody>
         </table>
       </div>
-      <p class="calc-note">&ldquo;Exact&rdquo; values are fixed by definition of the SI units. For measured values, the number in parentheses is the one-standard-deviation uncertainty in the last digits (NIST convention), and &ldquo;&hellip;&rdquo; means the exact value continues. Source: 2022 CODATA recommended values (NIST SP 961, the latest release). Future CODATA releases may adjust the measured values slightly.</p>
+      <p class="calc-note">Units shown in square brackets, such as <span data-tex="[\mathrm{m}^{-1}]"></span>, are cycles per metre exactly as NIST prints them. &ldquo;Exact&rdquo; values are fixed by definition of the SI units. For measured values, the number in parentheses is the one-standard-deviation uncertainty in the last digits (NIST convention), and &ldquo;&hellip;&rdquo; means the exact value continues. Source: 2022 CODATA recommended values (NIST SP 961, the latest release). Future CODATA releases may adjust the measured values slightly.</p>
     </div>
   </div>
 

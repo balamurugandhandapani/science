@@ -2,11 +2,11 @@
   <div class="explorer-intro">
     <p class="eyebrow">Interactive Simulations &middot; Mechanics, Waves, Quantum &amp; Crystals</p>
     <h2>Physics Simulations</h2>
-    <p>Move the sliders and watch the physics respond &mdash; ten interactive labs from mechanics, waves, quantum physics, crystals and circuits. Every number on the screen is computed live from the equations shown.</p>
+    <p>Pick a coloured box to open a simulation. Each box previews its own animation &mdash; then move the sliders and watch the physics respond. Every number on the screen is computed live from the equations shown.</p>
   </div>
-  <div class="calc-tabs" id="calcTabs"><button class="calc-tab active" data-tab="pe">Pendulum Lab</button><button class="calc-tab" data-tab="wv">Double Slit</button><button class="calc-tab" data-tab="ph">Photoelectric Effect</button><button class="calc-tab" data-tab="br">Bragg Diffraction</button><button class="calc-tab" data-tab="pj">Projectile + Air</button><button class="calc-tab" data-tab="sp">Mass &amp; Spring</button><button class="calc-tab" data-tab="rd">Radioactive Decay</button><button class="calc-tab" data-tab="bb">Blackbody</button><button class="calc-tab" data-tab="hy">Hydrogen Atom</button><button class="calc-tab" data-tab="dc">DC Circuit</button></div>
+  <section id="simGallery" class="sim-gallery" aria-label="Simulation gallery"></section>
 
-  <div class="calc-panel active" id="panel-pe"><div class="calc-card">
+  <div class="calc-panel" id="panel-pe"><div class="calc-card">
     <h3>Simple Pendulum Lab</h3>
     <p class="calc-formula"><span data-tex="\ddot\theta=-\dfrac{g}{L}\sin\theta-b\,\dot\theta" data-display="block"></span><span data-tex="T_0=2\pi\sqrt{\dfrac{L}{g}}\qquad T=\dfrac{T_0}{\mathrm{AGM}\left(1,\cos\frac{\theta_0}{2}\right)}" data-display="block"></span></p>
     <div class="calc-grid"><label><span>Gravity</span><select id="pe-g"><option value="9.80665" selected>Earth &ndash; 9.80665 m/s&sup2;</option><option value="1.62">Moon &ndash; 1.62 m/s&sup2;</option><option value="3.73">Mars &ndash; 3.73 m/s&sup2;</option><option value="24.79">Jupiter &ndash; 24.79 m/s&sup2;</option></select></label></div>

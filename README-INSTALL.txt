@@ -118,3 +118,18 @@ NEW FILE: sims2.js (loaded after sims.js; shares helpers through window.SIMUI). 
 Projectile + air drag (RK4, quadratic drag), mass-spring (RK4), radioactive decay (stochastic vs expected),
 blackbody spectrum (Planck, Wien, Stefan-Boltzmann, Rayleigh-Jeans), hydrogen atom (Bohr, reduced-mass Rydberg constant),
 DC circuit (series / parallel). Constants: exact SI-2019 and CODATA 2022. All code original; inspired by PhET's topics only.
+
+=== CONSTANTS TABLE: full NIST 2022 CODATA chart (updated) ===
+Physics.html > Constants tab now lists ALL 114 values printed on the CODATA 2022 wall chart (NIST SP 961, May 2024)
+plus the two SI constants that appear only on the wallet card (NIST SP 959): 133Cs hyperfine frequency and luminous efficacy.
+Grouped into 11 categories (+ 4 clearly-marked extra reference values: g_n, atm, hc in eV nm, Cu Ka1 wavelength).
+Verified: every value was matched character-by-character against the text of the two NIST PDFs (114/114 found, and every
+number printed on the charts is in the table), the 23 exact/derived values were recomputed from h, e, k, NA, c, and the
+11 constants used inside the calculators/simulations were confirmed equal to the chart. Data lives in physics.js (CONST_RAW).
+
+=== SIMULATIONS PAGE: coloured gallery (updated) ===
+NEW FILE: gallery.js (loaded last on Simulations.html). CHANGED: sims-body.html (tab bar replaced by the gallery), Simulations.html, style.css
+Ten coloured boxes, each with a live animated preview; click one to open that simulation under a banner in the same colours
+(formula box, sliders, buttons and result highlights are tinted to match). Features: category filter chips, back / previous / next buttons,
+deep links (Simulations.html#bb opens Blackbody), browser Back button works, running simulations pause when you leave them,
+static previews for visitors who prefer reduced motion. To add a simulation: add a panel in sims-body.html and an entry + preview in gallery.js.

@@ -243,39 +243,147 @@ const PHY = (function () {
   }
 
   /* ---------- Constants table ---------- */
-  const CONSTANTS = [
-    /* [name, symbol (LaTeX), value (LaTeX), unit (LaTeX), type] */
-    ['Speed of light in vacuum', 'c', '299\\,792\\,458', '\\mathrm{m\\,s^{-1}}', 'Exact'],
-    ['Planck constant', 'h', '6.626\\,070\\,15\\times10^{-34}', '\\mathrm{J\\,s}', 'Exact'],
-    ['Reduced Planck constant', '\\hbar=\\dfrac{h}{2\\pi}', '1.054\\,571\\,817\\ldots\\times10^{-34}', '\\mathrm{J\\,s}', 'Exact'],
-    ['Elementary charge', 'e', '1.602\\,176\\,634\\times10^{-19}', '\\mathrm{C}', 'Exact'],
-    ['Boltzmann constant', 'k_{\\mathrm{B}}', '1.380\\,649\\times10^{-23}', '\\mathrm{J\\,K^{-1}}', 'Exact'],
-    ['Avogadro constant', 'N_{\\mathrm{A}}', '6.022\\,140\\,76\\times10^{23}', '\\mathrm{mol^{-1}}', 'Exact'],
-    ['Molar gas constant', 'R', '8.314\\,462\\,618\\ldots', '\\mathrm{J\\,mol^{-1}\\,K^{-1}}', 'Exact'],
-    ['Faraday constant', 'F', '96\\,485.332\\,12\\ldots', '\\mathrm{C\\,mol^{-1}}', 'Exact'],
-    ['Stefan\u2013Boltzmann constant', '\\sigma', '5.670\\,374\\,419\\ldots\\times10^{-8}', '\\mathrm{W\\,m^{-2}\\,K^{-4}}', 'Exact'],
-    ['Standard acceleration of gravity', 'g_{\\mathrm{n}}', '9.806\\,65', '\\mathrm{m\\,s^{-2}}', 'Exact (conventional)'],
-    ['Standard atmosphere', '\\mathrm{atm}', '101\\,325', '\\mathrm{Pa}', 'Exact (conventional)'],
-    ['Electron volt', '\\mathrm{eV}', '1.602\\,176\\,634\\times10^{-19}', '\\mathrm{J}', 'Exact'],
-    ['Photon energy\u2013wavelength product', 'hc', '1239.841\\,984\\ldots', '\\mathrm{eV\\,nm}', 'Exact'],
-    ['Newtonian gravitational constant', 'G', '6.674\\,30(15)\\times10^{-11}', '\\mathrm{m^{3}\\,kg^{-1}\\,s^{-2}}', 'Measured'],
-    ['Vacuum electric permittivity', '\\varepsilon_{0}', '8.854\\,187\\,8188(14)\\times10^{-12}', '\\mathrm{F\\,m^{-1}}', 'Measured'],
-    ['Vacuum magnetic permeability', '\\mu_{0}', '1.256\\,637\\,061\\,27(20)\\times10^{-6}', '\\mathrm{N\\,A^{-2}}', 'Measured'],
-    ['Electron mass', 'm_{\\mathrm{e}}', '9.109\\,383\\,7139(28)\\times10^{-31}', '\\mathrm{kg}', 'Measured'],
-    ['Proton mass', 'm_{\\mathrm{p}}', '1.672\\,621\\,925\\,95(52)\\times10^{-27}', '\\mathrm{kg}', 'Measured'],
-    ['Neutron mass', 'm_{\\mathrm{n}}', '1.674\\,927\\,500\\,56(85)\\times10^{-27}', '\\mathrm{kg}', 'Measured'],
-    ['Atomic mass constant', 'm_{\\mathrm{u}}=1\\,\\mathrm{u}', '1.660\\,539\\,068\\,92(52)\\times10^{-27}', '\\mathrm{kg}', 'Measured'],
-    ['Fine-structure constant', '\\alpha', '7.297\\,352\\,5643(11)\\times10^{-3}', '\\text{dimensionless}', 'Measured'],
-    ['Rydberg constant', 'R_{\\infty}', '10\\,973\\,731.568\\,157(12)', '\\mathrm{m^{-1}}', 'Measured'],
-    ['Bohr radius', 'a_{0}', '5.291\\,772\\,105\\,44(82)\\times10^{-11}', '\\mathrm{m}', 'Measured'],
-    ['Bohr magneton', '\\mu_{\\mathrm{B}}', '9.274\\,010\\,0657(29)\\times10^{-24}', '\\mathrm{J\\,T^{-1}}', 'Measured'],
-    ['Cu K\u03b11 X-ray wavelength', '\\lambda(\\mathrm{Cu\\,K}\\alpha_{1})', '1.540\\,562', '\\mathrm{\\AA}', 'Reference line (Bearden 1967)']
+  /* ---- Constants: compact rows [category, name, symbol (LaTeX), value, unit, type?] ----
+   Source: NIST SP 961 (wall chart, May 2024) and SP 959 (wallet card) - 2022 CODATA recommended values.
+   value: groups of digits separated by spaces; (nn) = 1-sigma uncertainty; ... = exact value continues; eN = x 10^N
+   unit : space-separated, ^n = power, [ ] = cycles per unit as printed by NIST, blank = dimensionless */
+  const CONST_CATS = { A: 'SI defining constants', B: 'Universal and electromagnetic', C: 'Rydberg, Bohr and Hartree units; magnetons', D: 'Electron', E: 'Muon', F: 'Proton',
+    G: 'Neutron, deuteron, helion and alpha particle', H: 'Atomic mass unit and physico-chemical constants', I: 'X-ray units', J: 'Energy equivalents',
+    K: 'Other reference values (not on the CODATA chart)' };
+  const CONST_RAW = [
+    ['A', '\u00b9\u00b3\u00b3Cs hyperfine transition frequency', '\\Delta\\nu_{\\mathrm{Cs}}', '9 192 631 770', 'Hz'],
+    ['A', 'Speed of light in vacuum', 'c', '299 792 458', 'm s^-1'],
+    ['A', 'Planck constant', 'h', '6.626 070 15e-34', 'J Hz^-1'],
+    ['A', 'Elementary charge', 'e', '1.602 176 634e-19', 'C'],
+    ['A', 'Avogadro constant', 'N_{\\mathrm{A}}', '6.022 140 76e23', 'mol^-1'],
+    ['A', 'Boltzmann constant', 'k_{\\mathrm{B}}', '1.380 649e-23', 'J K^-1'],
+    ['A', 'Luminous efficacy', 'K_{\\mathrm{cd}}', '683', 'lm W^-1'],
+    ['B', 'Newtonian constant of gravitation', 'G', '6.674 30(15)e-11', 'm^3 kg^-1 s^-2'],
+    ['B', 'Planck constant in eV s', 'h', '4.135 667 696\u2026e-15', 'eV Hz^-1'],
+    ['B', 'Reduced Planck constant', '\\hbar', '1.054 571 817\u2026e-34', 'J s'],
+    ['B', 'Reduced Planck constant in eV s', '\\hbar', '6.582 119 569\u2026e-16', 'eV s'],
+    ['B', 'Vacuum magnetic permeability', '\\mu_{0}', '1.256 637 061 27(20)e-6', 'N A^-2'],
+    ['B', 'Vacuum magnetic permeability ratio', '\\mu_{0}/(4\\pi\\times10^{-7})', '0.999 999 999 87(16)', 'N A^-2'],
+    ['B', 'Vacuum electric permittivity', '\\epsilon_{0}', '8.854 187 8188(14)e-12', 'F m^-1'],
+    ['B', 'Josephson constant', 'K_{\\mathrm{J}}', '483 597.848 4\u2026e9', 'Hz V^-1'],
+    ['B', 'von Klitzing constant', 'R_{\\mathrm{K}}', '25 812.807 45\u2026', '\u03a9'],
+    ['B', 'Magnetic flux quantum', '\\Phi_{0}', '2.067 833 848\u2026e-15', 'Wb'],
+    ['B', 'Fine-structure constant', '\\alpha', '7.297 352 5643(11)e-3', ''],
+    ['B', 'Inverse fine-structure constant', '\\alpha^{-1}', '137.035 999 177(21)', ''],
+    ['C', 'Bohr magneton', '\\mu_{\\mathrm{B}}', '9.274 010 0657(29)e-24', 'J T^-1'],
+    ['C', 'Bohr magneton in eV/T', '\\mu_{\\mathrm{B}}', '5.788 381 7982(18)e-5', 'eV T^-1'],
+    ['C', 'Nuclear magneton', '\\mu_{\\mathrm{N}}', '5.050 783 7393(16)e-27', 'J T^-1'],
+    ['C', 'Nuclear magneton in eV/T', '\\mu_{\\mathrm{N}}', '3.152 451 254 17(98)e-8', 'eV T^-1'],
+    ['C', 'Rydberg frequency', 'cR_{\\infty}', '3.289 841 960 2500(36)e15', 'Hz'],
+    ['C', 'Rydberg energy in eV', 'hcR_{\\infty}', '13.605 693 122 990(15)', 'eV'],
+    ['C', 'Rydberg constant', 'R_{\\infty}', '10 973 731.568 157(12)', '[m^-1]'],
+    ['C', 'Bohr radius', 'a_{0}', '5.291 772 105 44(82)e-11', 'm'],
+    ['C', 'Hartree energy', 'E_{\\mathrm{h}}', '4.359 744 722 2060(48)e-18', 'J'],
+    ['C', 'Hartree energy in eV', 'E_{\\mathrm{h}}', '27.211 386 245 981(30)', 'eV'],
+    ['D', 'Electron mass', 'm_{\\mathrm{e}}', '9.109 383 7139(28)e-31', 'kg'],
+    ['D', 'Electron mass in u', 'm_{\\mathrm{e}}', '5.485 799 090 441(97)e-4', 'u'],
+    ['D', 'Electron mass energy equivalent in MeV', 'm_{\\mathrm{e}}c^{2}', '0.510 998 950 69(16)', 'MeV'],
+    ['D', 'Electron-muon mass ratio', 'm_{\\mathrm{e}}/m_{\\mu}', '4.836 331 70(11)e-3', ''],
+    ['D', 'Electron-proton mass ratio', 'm_{\\mathrm{e}}/m_{\\mathrm{p}}', '5.446 170 214 889(94)e-4', ''],
+    ['D', 'Electron charge to mass quotient', '-e/m_{\\mathrm{e}}', '-1.758 820 008 38(55)e11', 'C kg^-1'],
+    ['D', 'Reduced Compton wavelength', '\\bar{\\lambda}_{\\mathrm{C}}', '3.861 592 6744(12)e-13', 'm'],
+    ['D', 'Compton wavelength', '\\lambda_{\\mathrm{C}}', '2.426 310 235 38(76)e-12', '[m]'],
+    ['D', 'Classical electron radius', 'r_{\\mathrm{e}}', '2.817 940 3205(13)e-15', 'm'],
+    ['D', 'Thomson cross section', '\\sigma_{\\mathrm{e}}', '6.652 458 7051(62)e-29', 'm^2'],
+    ['D', 'Electron magnetic moment', '\\mu_{\\mathrm{e}}', '-9.284 764 6917(29)e-24', 'J T^-1'],
+    ['D', 'Electron magnetic moment to Bohr magneton ratio', '\\mu_{\\mathrm{e}}/\\mu_{\\mathrm{B}}', '-1.001 159 652 180 46(18)', ''],
+    ['D', 'Electron magnetic moment to nuclear magneton ratio', '\\mu_{\\mathrm{e}}/\\mu_{\\mathrm{N}}', '-1838.281 971 877(32)', ''],
+    ['D', 'Electron magnetic moment anomaly', 'a_{\\mathrm{e}}', '1.159 652 180 46(18)e-3', ''],
+    ['D', 'Electron g-factor', 'g_{\\mathrm{e}}', '-2.002 319 304 360 92(36)', ''],
+    ['D', 'Electron-proton magnetic moment ratio', '\\mu_{\\mathrm{e}}/\\mu_{\\mathrm{p}}', '-658.210 687 89(19)', ''],
+    ['E', 'Muon mass in u', 'm_{\\mu}', '0.113 428 9257(25)', 'u'],
+    ['E', 'Muon mass energy equivalent in MeV', 'm_{\\mu}c^{2}', '105.658 3755(23)', 'MeV'],
+    ['E', 'Muon-electron mass ratio', 'm_{\\mu}/m_{\\mathrm{e}}', '206.768 2827(46)', ''],
+    ['E', 'Muon magnetic moment', '\\mu_{\\mu}', '-4.490 448 30(10)e-26', 'J T^-1'],
+    ['E', 'Muon magnetic moment to Bohr magneton ratio', '\\mu_{\\mu}/\\mu_{\\mathrm{B}}', '-4.841 970 48(11)e-3', ''],
+    ['E', 'Muon magnetic moment to nuclear magneton ratio', '\\mu_{\\mu}/\\mu_{\\mathrm{N}}', '-8.890 597 04(20)', ''],
+    ['E', 'Muon magnetic moment anomaly', 'a_{\\mu}', '1.165 920 62(41)e-3', ''],
+    ['E', 'Muon g-factor', 'g_{\\mu}', '-2.002 331 841 23(82)', ''],
+    ['E', 'Muon-proton magnetic moment ratio', '\\mu_{\\mu}/\\mu_{\\mathrm{p}}', '-3.183 345 146(71)', ''],
+    ['F', 'Proton mass', 'm_{\\mathrm{p}}', '1.672 621 925 95(52)e-27', 'kg'],
+    ['F', 'Proton mass in u', 'm_{\\mathrm{p}}', '1.007 276 466 5789(83)', 'u'],
+    ['F', 'Proton mass energy equivalent in MeV', 'm_{\\mathrm{p}}c^{2}', '938.272 089 43(29)', 'MeV'],
+    ['F', 'Proton-electron mass ratio', 'm_{\\mathrm{p}}/m_{\\mathrm{e}}', '1836.152 673 426(32)', ''],
+    ['F', 'Proton magnetic moment', '\\mu_{\\mathrm{p}}', '1.410 606 795 45(60)e-26', 'J T^-1'],
+    ['F', 'Proton magnetic moment to nuclear magneton ratio', '\\mu_{\\mathrm{p}}/\\mu_{\\mathrm{N}}', '2.792 847 344 63(82)', ''],
+    ['F', 'Proton magnetic shielding correction (H\u2082O, sphere, 25 \u00b0C)', '\\sigma^{\\prime}_{\\mathrm{p}}', '2.567 15(41)e-5', ''],
+    ['F', 'Proton gyromagnetic ratio', '\\gamma_{\\mathrm{p}}', '2.675 221 8708(11)e8', 's^-1 T^-1'],
+    ['F', 'Proton gyromagnetic ratio over 2\u03c0', '\\gamma_{\\mathrm{p}}/2\\pi', '42.577 478 461(18)', 'MHz T^-1'],
+    ['F', 'Shielded proton gyromagnetic ratio (H\u2082O, sphere, 25 \u00b0C)', '\\gamma^{\\prime}_{\\mathrm{p}}', '2.675 153 194(11)e8', 's^-1 T^-1'],
+    ['F', 'Shielded proton gyromagnetic ratio over 2\u03c0', '\\gamma^{\\prime}_{\\mathrm{p}}/2\\pi', '42.576 385 43(17)', 'MHz T^-1'],
+    ['G', 'Neutron mass in u', 'm_{\\mathrm{n}}', '1.008 664 916 06(40)', 'u'],
+    ['G', 'Neutron mass energy equivalent in MeV', 'm_{\\mathrm{n}}c^{2}', '939.565 421 94(48)', 'MeV'],
+    ['G', 'Neutron-proton mass ratio', 'm_{\\mathrm{n}}/m_{\\mathrm{p}}', '1.001 378 419 46(40)', ''],
+    ['G', 'Neutron magnetic moment', '\\mu_{\\mathrm{n}}', '-9.662 3653(23)e-27', 'J T^-1'],
+    ['G', 'Neutron magnetic moment to nuclear magneton ratio', '\\mu_{\\mathrm{n}}/\\mu_{\\mathrm{N}}', '-1.913 042 76(45)', ''],
+    ['G', 'Deuteron mass in u', 'm_{\\mathrm{d}}', '2.013 553 212 544(15)', 'u'],
+    ['G', 'Deuteron mass energy equivalent in MeV', 'm_{\\mathrm{d}}c^{2}', '1875.612 945 00(58)', 'MeV'],
+    ['G', 'Deuteron-proton mass ratio', 'm_{\\mathrm{d}}/m_{\\mathrm{p}}', '1.999 007 501 2699(84)', ''],
+    ['G', 'Deuteron magnetic moment', '\\mu_{\\mathrm{d}}', '4.330 735 087(11)e-27', 'J T^-1'],
+    ['G', 'Deuteron magnetic moment to nuclear magneton ratio', '\\mu_{\\mathrm{d}}/\\mu_{\\mathrm{N}}', '0.857 438 2335(22)', ''],
+    ['G', 'Helion (\u00b3He nucleus) mass in u', 'm_{\\mathrm{h}}', '3.014 932 246 932(74)', 'u'],
+    ['G', 'Helion mass energy equivalent in MeV', 'm_{\\mathrm{h}}c^{2}', '2808.391 611 12(88)', 'MeV'],
+    ['G', 'Shielded helion magnetic moment (gas, sphere, 25 \u00b0C)', '\\mu^{\\prime}_{\\mathrm{h}}', '-1.074 553 110 35(93)e-26', 'J T^-1'],
+    ['G', 'Shielded helion moment to Bohr magneton ratio', '\\mu^{\\prime}_{\\mathrm{h}}/\\mu_{\\mathrm{B}}', '-1.158 671 494 57(94)e-3', ''],
+    ['G', 'Shielded helion moment to nuclear magneton ratio', '\\mu^{\\prime}_{\\mathrm{h}}/\\mu_{\\mathrm{N}}', '-2.127 497 7624(17)', ''],
+    ['G', 'Alpha particle mass in u', 'm_{\\alpha}', '4.001 506 179 129(62)', 'u'],
+    ['G', 'Alpha particle mass energy equivalent in MeV', 'm_{\\alpha}c^{2}', '3727.379 4118(12)', 'MeV'],
+    ['H', 'Atomic mass constant (1 u = m(\u00b9\u00b2C)/12)', 'm_{\\mathrm{u}}', '1.660 539 068 92(52)e-27', 'kg'],
+    ['H', 'Atomic mass constant energy equivalent in MeV', 'm_{\\mathrm{u}}c^{2}', '931.494 103 72(29)', 'MeV'],
+    ['H', 'Faraday constant', 'F', '96 485.332 12\u2026', 'C mol^-1'],
+    ['H', 'Molar gas constant', 'R', '8.314 462 618\u2026', 'J mol^-1 K^-1'],
+    ['H', 'Boltzmann constant in eV/K (listed under the molar gas constant)', 'k_{\\mathrm{B}}', '8.617 333 262\u2026e-5', 'eV K^-1'],
+    ['H', 'Molar volume of ideal gas (T = 273.15 K, p = 101.325 kPa)', 'V_{\\mathrm{m}}', '22.413 969 54\u2026e-3', 'm^3 mol^-1'],
+    ['H', 'Stefan\u2013Boltzmann constant', '\\sigma', '5.670 374 419\u2026e-8', 'W m^-2 K^-4'],
+    ['H', 'First radiation constant', 'c_{1}', '3.741 771 852\u2026e-16', '[W m^2]'],
+    ['H', 'Second radiation constant', 'c_{2}', '1.438 776 877\u2026e-2', '[m K]'],
+    ['H', 'Wien displacement law constant (b = λₘₐₓT = c₂/4.965 114 231…)', 'b', '2.897 771 955\u2026e-3', '[m K]'],
+    ['I', 'Cu x unit: \u03bb(Cu K\u03b1\u2081)/1 537.400', '\\mathrm{xu(Cu\\,K}\\alpha_{1})', '1.002 076 97(28)e-13', 'm'],
+    ['I', 'Mo x unit: \u03bb(Mo K\u03b1\u2081)/707.831', '\\mathrm{xu(Mo\\,K}\\alpha_{1})', '1.002 099 52(53)e-13', 'm'],
+    ['J', '1 m\u207b\u00b9 in hertz', '[1\\,\\mathrm{m}^{-1}]\\,c', '299 792 458', 'Hz'],
+    ['J', '1 m\u207b\u00b9 in kelvin', '[1\\,\\mathrm{m}^{-1}]\\,hc/k', '1.438 776 877\u2026e-2', 'K'],
+    ['J', '1 m\u207b\u00b9 in electron volts', '[1\\,\\mathrm{m}^{-1}]\\,hc', '1.239 841 984\u2026e-6', 'eV'],
+    ['J', '1 m\u207b\u00b9 in atomic mass units', '[1\\,\\mathrm{m}^{-1}]\\,h/c', '1.331 025 048 24(41)e-15', 'u'],
+    ['J', '1 hertz in m\u207b\u00b9', '(1\\,\\mathrm{Hz})/c', '3.335 640 951\u2026e-9', '[m^-1]'],
+    ['J', '1 hertz in kelvin', '(1\\,\\mathrm{Hz})\\,h/k', '4.799 243 073\u2026e-11', 'K'],
+    ['J', '1 hertz in electron volts', '(1\\,\\mathrm{Hz})\\,h', '4.135 667 696\u2026e-15', 'eV'],
+    ['J', '1 kelvin in m\u207b\u00b9', '(1\\,\\mathrm{K})\\,k/hc', '69.503 480 04\u2026', '[m^-1]'],
+    ['J', '1 kelvin in hertz', '(1\\,\\mathrm{K})\\,k/h', '2.083 661 912\u2026e10', 'Hz'],
+    ['J', '1 kelvin in electron volts', '(1\\,\\mathrm{K})\\,k', '8.617 333 262\u2026e-5', 'eV'],
+    ['J', '1 joule in electron volts', '(1\\,\\mathrm{J})', '6.241 509 074\u2026e18', 'eV'],
+    ['J', '1 electron volt in joules', '(1\\,\\mathrm{eV})', '1.602 176 634e-19', 'J'],
+    ['J', '1 electron volt in m\u207b\u00b9', '(1\\,\\mathrm{eV})/hc', '8.065 543 937\u2026e5', '[m^-1]'],
+    ['J', '1 electron volt in hertz', '(1\\,\\mathrm{eV})/h', '2.417 989 242\u2026e14', 'Hz'],
+    ['J', '1 electron volt in kelvin', '(1\\,\\mathrm{eV})/k', '1.160 451 812\u2026e4', 'K'],
+    ['J', '1 electron volt in atomic mass units', '(1\\,\\mathrm{eV})/c^{2}', '1.073 544 100 83(33)e-9', 'u'],
+    ['J', '1 kilogram in atomic mass units', '(1\\,\\mathrm{kg})', '6.022 140 7537(19)e26', 'u'],
+    ['J', '1 atomic mass unit in kilograms', '(1\\,\\mathrm{u})', '1.660 539 068 92(52)e-27', 'kg'],
+    ['J', '1 atomic mass unit in m\u207b\u00b9', '(1\\,\\mathrm{u})\\,c/h', '7.513 006 6209(23)e14', '[m^-1]'],
+    ['J', '1 atomic mass unit in electron volts', '(1\\,\\mathrm{u})\\,c^{2}', '9.314 941 0372(29)e8', 'eV'],
+    ['K', 'Standard acceleration of gravity', 'g_{\\mathrm{n}}', '9.806 65', 'm s^-2', 'Exact (conventional)'],
+    ['K', 'Standard atmosphere', '\\mathrm{atm}', '101 325', 'Pa', 'Exact (conventional)'],
+    ['K', 'Photon energy\u2013wavelength product (from the chart\u2019s 1 m\u207b\u00b9 in eV)', 'hc', '1239.841 984\u2026', 'eV nm', 'Exact (derived)'],
+    ['K', 'Cu K\u03b1\u2081 X-ray wavelength', '\\lambda(\\mathrm{Cu\\,K}\\alpha_{1})', '1.540 562', '\u00c5', 'Reference line (Bearden 1967)']
   ];
+  /* compact value / unit -> LaTeX */
+  const valTeX = s => s.replace(/^(.*?)(?:e(-?\d+))?$/, (m, a, e) => a.replace(/\u2026/g, '\\ldots').replace(/ /g, '\\,') + (e ? '\\times10^{' + e + '}' : ''));
+  function uTeX(u) {
+    if (!u) return '\\text{dimensionless}';
+    const br = u[0] === '[' && u.endsWith(']'), inner = br ? u.slice(1, -1) : u;
+    const t = inner.split(' ').map(k => k === '\u03a9' ? '\\Omega' : k === '\u00c5' ? '\\AA' : k.replace(/\^(-?\d+)/, '^{$1}')).join('\\,');
+    return (br ? '[' : '') + '\\mathrm{' + t + '}' + (br ? ']' : '');
+  }
+  const CONSTANTS = CONST_RAW.map(r => [r[1], r[2], valTeX(r[3]), uTeX(r[4]), r[5] || (/\(\d+\)/.test(r[3]) ? 'Measured' : 'Exact'), r[0]]);
 
   return {
     K, fmt, texNum, unitTeX, photonWavelength, photonAll, spectralRegion, wavelengthToRGB,
     braggD, braggTwoTheta, scherrer, projectile, ohm, resistors,
-    UNITS, convert, CONSTANTS
+    UNITS, convert, CONSTANTS, CONST_RAW, CONST_CATS, valTeX, uTeX
   };
 })();
 
@@ -505,12 +613,15 @@ if (typeof document !== 'undefined') {
   /* ----- Constants ----- */
   function drawConstants(q) {
     const term = q.toLowerCase().trim();
-    const plain = c => (c[0] + ' ' + c[1]).replace(/\\mathrm|\\text|\\dfrac|\\/g, '').replace(/[{}]/g, '').toLowerCase();
+    const plain = c => (c[0] + ' ' + c[1]).replace(/\\,/g, ' ').replace(/\\mathrm|\\text|\\dfrac|\\/g, '').replace(/[{}]/g, '').toLowerCase();
     const rows = PHY.CONSTANTS.filter(c => !term || plain(c).includes(term));
-    const el = $('cs-rows');
-    el.innerHTML = rows.length
-      ? rows.map(c => '<tr><td>' + c[0] + '</td><td>' + T(c[1]) + '</td><td>' + T(c[2]) + '</td><td>' + T(c[3]) + '</td><td>' + c[4] + '</td></tr>').join('')
-      : '<tr><td colspan="5">No constant matches &ldquo;' + esc(q) + '&rdquo;.</td></tr>';
+    const el = $('cs-rows'); let html = '', last = '';
+    rows.forEach(c => {
+      if (c[5] !== last) { last = c[5]; html += '<tr class="cat-row"><td colspan="5">' + PHY.CONST_CATS[c[5]] + '</td></tr>'; }
+      html += '<tr><td>' + c[0] + '</td><td>' + T(c[1]) + '</td><td>' + T(c[2]) + '</td><td>' + T(c[3]) + '</td><td>' + c[4] + '</td></tr>';
+    });
+    el.innerHTML = rows.length ? html : '<tr><td colspan="5">No constant matches &ldquo;' + esc(q) + '&rdquo;.</td></tr>';
+    $('cs-count').textContent = 'Showing ' + rows.length + ' of ' + PHY.CONSTANTS.length + ' constants';
     typeset(el);
   }
 
