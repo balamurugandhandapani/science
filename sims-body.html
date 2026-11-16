@@ -2,9 +2,9 @@
   <div class="explorer-intro">
     <p class="eyebrow">Interactive Simulations &middot; Mechanics, Waves, Quantum &amp; Crystals</p>
     <h2>Physics Simulations</h2>
-    <p>Move the sliders and watch the physics respond &mdash; a pendulum, double-slit interference, the photoelectric effect and Bragg diffraction. Every number on the screen is computed live from the equations shown.</p>
+    <p>Move the sliders and watch the physics respond &mdash; ten interactive labs from mechanics, waves, quantum physics, crystals and circuits. Every number on the screen is computed live from the equations shown.</p>
   </div>
-  <div class="calc-tabs" id="calcTabs"><button class="calc-tab active" data-tab="pe">Pendulum Lab</button><button class="calc-tab" data-tab="wv">Double Slit</button><button class="calc-tab" data-tab="ph">Photoelectric Effect</button><button class="calc-tab" data-tab="br">Bragg Diffraction</button></div>
+  <div class="calc-tabs" id="calcTabs"><button class="calc-tab active" data-tab="pe">Pendulum Lab</button><button class="calc-tab" data-tab="wv">Double Slit</button><button class="calc-tab" data-tab="ph">Photoelectric Effect</button><button class="calc-tab" data-tab="br">Bragg Diffraction</button><button class="calc-tab" data-tab="pj">Projectile + Air</button><button class="calc-tab" data-tab="sp">Mass &amp; Spring</button><button class="calc-tab" data-tab="rd">Radioactive Decay</button><button class="calc-tab" data-tab="bb">Blackbody</button><button class="calc-tab" data-tab="hy">Hydrogen Atom</button><button class="calc-tab" data-tab="dc">DC Circuit</button></div>
 
   <div class="calc-panel active" id="panel-pe"><div class="calc-card">
     <h3>Simple Pendulum Lab</h3>
@@ -49,5 +49,66 @@
     <p class="calc-note">Rays reflecting from neighbouring planes travel an extra path <span data-tex="2d\sin\theta"></span>; when that equals a whole number of wavelengths they add up and a strong peak appears. With more planes <span data-tex="N"></span> the peaks get sharper &mdash; the reason very small crystals give broad X-ray peaks (the Scherrer equation).</p>
   </div></div>
 
-  <p class="sources-note">Inspired by the interactive-simulation approach of the <a href="https://phet.colorado.edu" target="_blank" rel="noopener">PhET Interactive Simulations</a> project (University of Colorado Boulder). These simulations are original work &mdash; written from scratch, using none of PhET&rsquo;s code, artwork or branding &mdash; and are not affiliated with or endorsed by PhET.</p>
+
+  <div class="calc-panel" id="panel-pj"><div class="calc-card">
+    <h3>Projectile Motion with Air Resistance</h3>
+    <p class="calc-formula"><span data-tex="\vec F_{\mathrm{drag}}=-\tfrac12\rho C_dA\,|\vec v|\,\vec v\qquad m\ddot{\vec r}=m\vec g+\vec F_{\mathrm{drag}}" data-display="block"></span><span data-tex="R_{\mathrm{vac}}=\dfrac{v_0^{2}\sin 2\alpha}{g}\quad(h_0=0)" data-display="block"></span></p>
+<div class="calc-grid"><label><span>Gravity</span><select id="pj-g"><option value="9.80665" selected>Earth &ndash; 9.80665 m/s&sup2;</option><option value="1.62">Moon &ndash; 1.62 m/s&sup2;</option><option value="3.73">Mars &ndash; 3.73 m/s&sup2;</option><option value="24.79">Jupiter &ndash; 24.79 m/s&sup2;</option></select></label><label><span>Air resistance</span><select id="pj-air"><option value="on" selected>On (quadratic drag)</option><option value="off">Off (vacuum)</option></select></label></div>
+    <div class="calc-grid" id="pj-ctl"></div>
+    <button class="calc-btn" id="pj-go">&#9654; Fire</button>
+    <div class="plot-wrap"><canvas id="pj-cv" width="760" height="310"></canvas></div>
+    <div class="calc-result" id="pj-out"></div>
+    <p class="calc-note">Compare the solid path (your air setting) with the dashed vacuum path. Air resistance shortens the range and makes the path steeper on the way down; heavier, smaller objects are slowed less. Uses <span data-tex="\rho=1.225\,\mathrm{kg\,m^{-3}}"></span> and a sphere with <span data-tex="C_d=0.47"></span>, integrated with 4th-order Runge&ndash;Kutta.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-sp"><div class="calc-card">
+    <h3>Mass on a Spring (Hooke&rsquo;s Law)</h3>
+    <p class="calc-formula"><span data-tex="F=-kx\qquad m\ddot x=-kx-b\dot x" data-display="block"></span><span data-tex="T=2\pi\sqrt{\dfrac{m}{k}}\qquad E=\tfrac12 kx^{2}+\tfrac12 mv^{2}" data-display="block"></span></p>
+    <div class="calc-grid" id="sp-ctl"></div>
+    <button class="calc-btn" id="sp-go">&#9654; Start</button> <button class="calc-btn-sm" id="sp-rs" type="button">Reset</button>
+    <div class="plot-wrap"><canvas id="sp-cv" width="760" height="320"></canvas></div>
+    <div class="calc-result" id="sp-out"></div>
+    <p class="calc-note">The period depends on <span data-tex="m"></span> and <span data-tex="k"></span> but <em>not</em> on how far you pull it. With no damping the total energy stays constant while it swaps between kinetic and spring energy. Displacement is measured from the equilibrium position, where gravity and the spring balance.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-rd"><div class="calc-card">
+    <h3>Radioactive Decay</h3>
+    <p class="calc-formula"><span data-tex="N(t)=N_0\,2^{-t/t_{1/2}}" data-display="block"></span><span data-tex="\lambda=\dfrac{\ln 2}{t_{1/2}}\qquad\tau=\dfrac{1}{\lambda}\qquad A=\lambda N" data-display="block"></span></p>
+    <div class="calc-grid" id="rd-ctl"></div>
+    <button class="calc-btn" id="rd-go">&#9654; Start</button> <button class="calc-btn-sm" id="rd-rs" type="button">Reset</button>
+    <div class="plot-wrap"><canvas id="rd-cv" width="760" height="330"></canvas></div>
+    <div class="calc-result" id="rd-out"></div>
+    <p class="calc-note">Each atom decays at random, so a single run wobbles around the smooth dashed curve; with more atoms the run hugs the curve more closely. After one half-life about half of the atoms remain. Times here are in seconds for easy watching; real isotopes range from microseconds to billions of years.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-bb"><div class="calc-card">
+    <h3>Blackbody Spectrum</h3>
+    <p class="calc-formula"><span data-tex="B_\lambda(T)=\dfrac{2hc^{2}}{\lambda^{5}}\,\dfrac{1}{e^{hc/(\lambda k_BT)}-1}" data-display="block"></span><span data-tex="\lambda_{\max}T=b\qquad j=\sigma T^{4}\qquad B_\lambda\approx\dfrac{2ck_BT}{\lambda^{4}}\ \text{(Rayleigh&ndash;Jeans)}" data-display="block"></span></p>
+    <div class="calc-grid"><label><span>Classical (Rayleigh&ndash;Jeans) curve</span><select id="bb-rj"><option value="off" selected>Hidden</option><option value="on">Show for comparison</option></select></label></div>
+    <div class="calc-grid" id="bb-ctl"></div>
+    <div class="plot-wrap"><canvas id="bb-cv" width="760" height="330"></canvas></div>
+    <div class="calc-result" id="bb-out"></div>
+    <p class="calc-note">Try 5772 K (the Sun&rsquo;s surface) &mdash; the peak sits in the visible band. Hotter objects peak at shorter wavelengths and radiate far more power. The classical curve climbs without limit at short wavelengths (the &ldquo;ultraviolet catastrophe&rdquo;) &mdash; Planck&rsquo;s quantum idea fixes it. <span data-tex="b=2.897771955\times10^{-3}\,\mathrm{m\,K}"></span>; the colour swatch is an approximation.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-hy"><div class="calc-card">
+    <h3>Hydrogen Atom (Bohr Model)</h3>
+    <p class="calc-formula"><span data-tex="E_n=-\dfrac{hcR_H}{n^{2}}\approx-\dfrac{13.6\,\mathrm{eV}}{n^{2}}\qquad r_n=n^{2}a_0" data-display="block"></span><span data-tex="\dfrac{1}{\lambda}=R_H\left(\dfrac{1}{n_f^{2}}-\dfrac{1}{n_i^{2}}\right)" data-display="block"></span></p>
+    <div class="calc-grid" id="hy-ctl"></div>
+    <div class="plot-wrap"><canvas id="hy-cv" width="760" height="330"></canvas></div>
+    <div class="calc-result" id="hy-out"></div>
+    <p class="calc-note">When the electron drops from level <span data-tex="n_i"></span> to <span data-tex="n_f"></span> the atom emits a photon of exactly the energy difference. Jumps ending at <span data-tex="n_f=2"></span> are the visible Balmer lines. Uses the hydrogen Rydberg constant <span data-tex="R_H=1.0967758\times10^{7}\,\mathrm{m^{-1}}"></span> (reduced-mass corrected), giving vacuum wavelengths (H&alpha; = 656.47 nm). Levels are drawn evenly spaced for clarity (real energies are listed beside them); the Bohr model is a teaching picture, not the full quantum atom.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-dc"><div class="calc-card">
+    <h3>DC Circuit (Ohm&rsquo;s Law)</h3>
+    <p class="calc-formula"><span data-tex="I=\dfrac{V}{R_{\mathrm{eq}}}\qquad P=IV=I^{2}R" data-display="block"></span><span data-tex="R_{\mathrm{series}}=R_1+R_2\qquad\dfrac{1}{R_{\mathrm{parallel}}}=\dfrac{1}{R_1}+\dfrac{1}{R_2}" data-display="block"></span></p>
+    <div class="calc-grid"><label><span>Connection</span><select id="dc-mode"><option value="series" selected>Series</option><option value="parallel">Parallel</option></select></label></div>
+    <div class="calc-grid" id="dc-ctl"></div>
+    <div class="plot-wrap"><canvas id="dc-cv" width="760" height="300"></canvas></div>
+    <div class="calc-result" id="dc-out"></div>
+    <p class="calc-note">In series the same current flows through both resistors and the voltages add up to the battery voltage. In parallel both resistors have the full battery voltage and the currents add. Ideal battery and wires; the resistors are treated as ideal too.</p>
+  </div></div>
+
+  <p class="sources-note">Simulations here are inspired by the interactive-simulation approach of the <a href="https://phet.colorado.edu" target="_blank" rel="noopener">PhET Interactive Simulations</a> project (University of Colorado Boulder). These simulations are original work &mdash; written from scratch, using none of PhET&rsquo;s code, artwork or branding &mdash; and are not affiliated with or endorsed by PhET.</p>
 </main>

@@ -112,3 +112,9 @@ NEW FILES: Simulations.html, sims-body.html, sims.js   CHANGED: nav.html, sitema
 Pendulum lab (RK4, exact AGM period), double-slit interference, photoelectric effect, Bragg diffraction.
 Original code, inspired by the PhET approach; no PhET code, art or branding is used (credit line is on the page).
 Work functions: HyperPhysics table (CRC Handbook data), typical polycrystalline values.
+
+--- Simulations page: six more labs added (now 10 tabs) ---
+NEW FILE: sims2.js (loaded after sims.js; shares helpers through window.SIMUI). CHANGED: sims-body.html, Simulations.html
+Projectile + air drag (RK4, quadratic drag), mass-spring (RK4), radioactive decay (stochastic vs expected),
+blackbody spectrum (Planck, Wien, Stefan-Boltzmann, Rayleigh-Jeans), hydrogen atom (Bohr, reduced-mass Rydberg constant),
+DC circuit (series / parallel). Constants: exact SI-2019 and CODATA 2022. All code original; inspired by PhET's topics only.

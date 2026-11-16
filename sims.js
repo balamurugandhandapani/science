@@ -220,5 +220,6 @@ if (typeof document !== 'undefined') (function () {
     set('br-an', SIM.braggAngles(d, lam).map(b => 'n=' + b[0] + ': ' + f(b[1]) + '°').join('   ') || 'none (λ > 2d)');
   }
 
+  window.SIMUI = { $, v, f, T, typeset, ctl, table, set, axes, line, clear, visible, INK, ACC };
   peReset(); drawWv(); phRead(); drawIV(); drawBr(); requestAnimationFrame(drawPh);
 })();
