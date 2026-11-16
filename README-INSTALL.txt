@@ -93,3 +93,22 @@ Tabs: Photon Energy, Bragg's Law, Scherrer Size, Projectile Motion, Ohm's Law (+
 - Unit factors: exact by definition (inch, foot, pound, atm, calorie 4.184, kWh, erg) or conventional (mmHg, psi, Oe).
 - Gravity: standard g = 9.80665 m/s2 (exact); Moon 1.62 and Mars 3.73 m/s2 from the NASA Planetary Fact Sheets.
 - Spectral-region boundaries (X-ray / UV / visible 380-750 nm / IR / microwave / radio) are conventional, not exact.
+
+
+=== LaTeX FORMULAS (KaTeX, self-hosted) ===
+NEW FILES/FOLDER: katex/ (katex.min.js, katex.min.css, fonts/, LICENSE), tex.js
+CHANGED: Physics.html, Stoichiometry.html (load KaTeX; CSP font-src now also allows 'self' so the KaTeX fonts load),
+         physics-body.html, physics.js, stoich-body.html, stoich.js, style.css, THIRD-PARTY-NOTICES.md
+- Every formula box, formula inside a note, result label/value, unit and the constants table is real LaTeX.
+- To add a formula anywhere: <span data-tex="E=\dfrac{hc}{\lambda}" data-display="block"></span>
+  (omit data-display for inline). After inserting new HTML with JavaScript, call renderTeX(element).
+- Upload the whole katex/ folder (including katex/fonts/) or the formulas will not appear.
+- The 404 for /fonts/Poppins-*.ttf and /fonts/IBMPlexMono-*.ttf in the browser console existed before; those font
+  files were never in the zip (the site falls back to the Google Fonts link).
+
+
+=== PHYSICS SIMULATIONS PAGE (new) ===
+NEW FILES: Simulations.html, sims-body.html, sims.js   CHANGED: nav.html, sitemap.xml, style.css
+Pendulum lab (RK4, exact AGM period), double-slit interference, photoelectric effect, Bragg diffraction.
+Original code, inspired by the PhET approach; no PhET code, art or branding is used (credit line is on the page).
+Work functions: HyperPhysics table (CRC Handbook data), typical polycrystalline values.

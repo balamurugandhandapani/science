@@ -174,21 +174,24 @@ function calcTolerance(){
   const denominator = Math.sqrt(2) * (rBavg + rO);
   const t = numerator / denominator;
 
+  const TX = tex => '<span data-tex="' + tex + '"></span>';   /* LaTeX (KaTeX) - no user text is ever placed inside */
   let stability;
-  if (t > 1.0) stability = 'Hexagonal / non-cubic (t &gt; 1.0)';
-  else if (t >= 0.9) stability = 'Ideal cubic perovskite (0.9 &ndash; 1.0)';
-  else if (t >= 0.71) stability = 'Orthorhombic / rhombohedral, tilted octahedra (0.71 &ndash; 0.9)';
-  else stability = 'Not perovskite-forming (t &lt; 0.71)';
+  if (t > 1.0) stability = 'Hexagonal / non-cubic (' + TX('t>1.0') + ')';
+  else if (t >= 0.9) stability = 'Ideal cubic perovskite (' + TX('0.9\\le t\\le 1.0') + ')';
+  else if (t >= 0.71) stability = 'Orthorhombic / rhombohedral, tilted octahedra (' + TX('0.71\\le t<0.9') + ')';
+  else stability = 'Not perovskite-forming (' + TX('t<0.71') + ')';
 
-  document.getElementById('tf-result').innerHTML = `
+  const res = document.getElementById('tf-result');
+  res.innerHTML = `
     <table class="result-table">
       <tr><td>Compound</td><td>${escapeHtml(compound)}</td></tr>
-      <tr><td>r<sub>B avg</sub></td><td>${rBavg.toFixed(4)} &Aring;</td></tr>
-      <tr><td>r<sub>A</sub> + r<sub>O</sub></td><td>${numerator.toFixed(4)} &Aring;</td></tr>
-      <tr><td>&radic;2 &times; (r<sub>B avg</sub> + r<sub>O</sub>)</td><td>${denominator.toFixed(4)} &Aring;</td></tr>
-      <tr class="result-highlight"><td>Tolerance factor, t</td><td>${t.toFixed(4)}</td></tr>
+      <tr><td>${TX('r_{B,\\mathrm{avg}}')}</td><td>${TX(rBavg.toFixed(4) + '\\,\\mathrm{\\AA}')}</td></tr>
+      <tr><td>${TX('r_A+r_O')}</td><td>${TX(numerator.toFixed(4) + '\\,\\mathrm{\\AA}')}</td></tr>
+      <tr><td>${TX('\\sqrt{2}\\,\\left(r_{B,\\mathrm{avg}}+r_O\\right)')}</td><td>${TX(denominator.toFixed(4) + '\\,\\mathrm{\\AA}')}</td></tr>
+      <tr class="result-highlight"><td>Tolerance factor, ${TX('t')}</td><td>${TX(t.toFixed(4))}</td></tr>
       <tr><td>Predicted structure</td><td>${stability}</td></tr>
     </table>`;
+  if (window.renderTeX) window.renderTeX(res);
 }
 
 /* ==============================

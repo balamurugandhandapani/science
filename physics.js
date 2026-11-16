@@ -26,6 +26,30 @@ const PHY = (function () {
     return x.toExponential(5).replace('e+', 'e').replace(/\.?0+e/, 'e');
   }
 
+
+  /* number -> LaTeX, e.g. 3.61172e-19 -> 3.61172\times10^{-19} */
+  function texNum(x) {
+    const s = fmt(x);
+    const m = s.match(/^(-?[\d.]+)e(-?\d+)$/);
+    return m ? m[1] + '\\times10^{' + m[2] + '}' : s;
+  }
+
+  /* unit name (plain text) -> LaTeX */
+  function unitTeX(u) {
+    let out = '', seg = '';
+    const flush = () => { if (seg) { out += '\\mathrm{' + seg + '}'; seg = ''; } };
+    for (const ch of String(u)) {
+      if (ch === '\u00b5') { flush(); out += '\\mu '; }
+      else if (ch === '\u00c5') { flush(); out += '\\mathrm{\\AA}'; }
+      else if (ch === '\u00b0') { flush(); out += '{}^{\\circ}'; }
+      else if (ch === ' ') { flush(); out += '\\,'; }
+      else if (/[A-Za-z0-9\/()]/.test(ch)) seg += ch;
+      /* any other character is dropped so user text can never inject LaTeX */
+    }
+    flush();
+    return out;
+  }
+
   /* ---------- Photon ---------- */
   const PHOTON_UNITS = {
     nm:  { type: 'wl', f: 1e-9 },
@@ -220,35 +244,36 @@ const PHY = (function () {
 
   /* ---------- Constants table ---------- */
   const CONSTANTS = [
-    ['Speed of light in vacuum', 'c', '299 792 458', 'm s<sup>&minus;1</sup>', 'Exact'],
-    ['Planck constant', 'h', '6.626 070 15 &times; 10<sup>&minus;34</sup>', 'J s', 'Exact'],
-    ['Reduced Planck constant', '&#295; (h/2&pi;)', '1.054 571 817&hellip; &times; 10<sup>&minus;34</sup>', 'J s', 'Exact'],
-    ['Elementary charge', 'e', '1.602 176 634 &times; 10<sup>&minus;19</sup>', 'C', 'Exact'],
-    ['Boltzmann constant', 'k<sub>B</sub>', '1.380 649 &times; 10<sup>&minus;23</sup>', 'J K<sup>&minus;1</sup>', 'Exact'],
-    ['Avogadro constant', 'N<sub>A</sub>', '6.022 140 76 &times; 10<sup>23</sup>', 'mol<sup>&minus;1</sup>', 'Exact'],
-    ['Molar gas constant', 'R', '8.314 462 618&hellip;', 'J mol<sup>&minus;1</sup> K<sup>&minus;1</sup>', 'Exact'],
-    ['Faraday constant', 'F', '96 485.332 12&hellip;', 'C mol<sup>&minus;1</sup>', 'Exact'],
-    ['Stefan&ndash;Boltzmann constant', '&sigma;', '5.670 374 419&hellip; &times; 10<sup>&minus;8</sup>', 'W m<sup>&minus;2</sup> K<sup>&minus;4</sup>', 'Exact'],
-    ['Standard acceleration of gravity', 'g<sub>n</sub>', '9.806 65', 'm s<sup>&minus;2</sup>', 'Exact (conventional)'],
-    ['Standard atmosphere', 'atm', '101 325', 'Pa', 'Exact (conventional)'],
-    ['Electron volt', 'eV', '1.602 176 634 &times; 10<sup>&minus;19</sup>', 'J', 'Exact'],
-    ['Photon energy&ndash;wavelength product', 'hc', '1239.841 984&hellip;', 'eV nm', 'Exact'],
-    ['Newtonian gravitational constant', 'G', '6.674 30(15) &times; 10<sup>&minus;11</sup>', 'm<sup>3</sup> kg<sup>&minus;1</sup> s<sup>&minus;2</sup>', 'Measured'],
-    ['Vacuum electric permittivity', '&epsilon;<sub>0</sub>', '8.854 187 8188(14) &times; 10<sup>&minus;12</sup>', 'F m<sup>&minus;1</sup>', 'Measured'],
-    ['Vacuum magnetic permeability', '&mu;<sub>0</sub>', '1.256 637 061 27(20) &times; 10<sup>&minus;6</sup>', 'N A<sup>&minus;2</sup>', 'Measured'],
-    ['Electron mass', 'm<sub>e</sub>', '9.109 383 7139(28) &times; 10<sup>&minus;31</sup>', 'kg', 'Measured'],
-    ['Proton mass', 'm<sub>p</sub>', '1.672 621 925 95(52) &times; 10<sup>&minus;27</sup>', 'kg', 'Measured'],
-    ['Neutron mass', 'm<sub>n</sub>', '1.674 927 500 56(85) &times; 10<sup>&minus;27</sup>', 'kg', 'Measured'],
-    ['Atomic mass constant', 'u', '1.660 539 068 92(52) &times; 10<sup>&minus;27</sup>', 'kg', 'Measured'],
-    ['Fine-structure constant', '&alpha;', '7.297 352 5643(11) &times; 10<sup>&minus;3</sup>', 'dimensionless', 'Measured'],
-    ['Rydberg constant', 'R<sub>&infin;</sub>', '10 973 731.568 157(12)', 'm<sup>&minus;1</sup>', 'Measured'],
-    ['Bohr radius', 'a<sub>0</sub>', '5.291 772 105 44(82) &times; 10<sup>&minus;11</sup>', 'm', 'Measured'],
-    ['Bohr magneton', '&mu;<sub>B</sub>', '9.274 010 0657(29) &times; 10<sup>&minus;24</sup>', 'J T<sup>&minus;1</sup>', 'Measured'],
-    ['Cu K&alpha;1 X-ray wavelength', '&lambda;(Cu K&alpha;1)', '1.540 562', '&Aring;', 'Reference line (Bearden 1967)']
+    /* [name, symbol (LaTeX), value (LaTeX), unit (LaTeX), type] */
+    ['Speed of light in vacuum', 'c', '299\\,792\\,458', '\\mathrm{m\\,s^{-1}}', 'Exact'],
+    ['Planck constant', 'h', '6.626\\,070\\,15\\times10^{-34}', '\\mathrm{J\\,s}', 'Exact'],
+    ['Reduced Planck constant', '\\hbar=\\dfrac{h}{2\\pi}', '1.054\\,571\\,817\\ldots\\times10^{-34}', '\\mathrm{J\\,s}', 'Exact'],
+    ['Elementary charge', 'e', '1.602\\,176\\,634\\times10^{-19}', '\\mathrm{C}', 'Exact'],
+    ['Boltzmann constant', 'k_{\\mathrm{B}}', '1.380\\,649\\times10^{-23}', '\\mathrm{J\\,K^{-1}}', 'Exact'],
+    ['Avogadro constant', 'N_{\\mathrm{A}}', '6.022\\,140\\,76\\times10^{23}', '\\mathrm{mol^{-1}}', 'Exact'],
+    ['Molar gas constant', 'R', '8.314\\,462\\,618\\ldots', '\\mathrm{J\\,mol^{-1}\\,K^{-1}}', 'Exact'],
+    ['Faraday constant', 'F', '96\\,485.332\\,12\\ldots', '\\mathrm{C\\,mol^{-1}}', 'Exact'],
+    ['Stefan\u2013Boltzmann constant', '\\sigma', '5.670\\,374\\,419\\ldots\\times10^{-8}', '\\mathrm{W\\,m^{-2}\\,K^{-4}}', 'Exact'],
+    ['Standard acceleration of gravity', 'g_{\\mathrm{n}}', '9.806\\,65', '\\mathrm{m\\,s^{-2}}', 'Exact (conventional)'],
+    ['Standard atmosphere', '\\mathrm{atm}', '101\\,325', '\\mathrm{Pa}', 'Exact (conventional)'],
+    ['Electron volt', '\\mathrm{eV}', '1.602\\,176\\,634\\times10^{-19}', '\\mathrm{J}', 'Exact'],
+    ['Photon energy\u2013wavelength product', 'hc', '1239.841\\,984\\ldots', '\\mathrm{eV\\,nm}', 'Exact'],
+    ['Newtonian gravitational constant', 'G', '6.674\\,30(15)\\times10^{-11}', '\\mathrm{m^{3}\\,kg^{-1}\\,s^{-2}}', 'Measured'],
+    ['Vacuum electric permittivity', '\\varepsilon_{0}', '8.854\\,187\\,8188(14)\\times10^{-12}', '\\mathrm{F\\,m^{-1}}', 'Measured'],
+    ['Vacuum magnetic permeability', '\\mu_{0}', '1.256\\,637\\,061\\,27(20)\\times10^{-6}', '\\mathrm{N\\,A^{-2}}', 'Measured'],
+    ['Electron mass', 'm_{\\mathrm{e}}', '9.109\\,383\\,7139(28)\\times10^{-31}', '\\mathrm{kg}', 'Measured'],
+    ['Proton mass', 'm_{\\mathrm{p}}', '1.672\\,621\\,925\\,95(52)\\times10^{-27}', '\\mathrm{kg}', 'Measured'],
+    ['Neutron mass', 'm_{\\mathrm{n}}', '1.674\\,927\\,500\\,56(85)\\times10^{-27}', '\\mathrm{kg}', 'Measured'],
+    ['Atomic mass constant', 'm_{\\mathrm{u}}=1\\,\\mathrm{u}', '1.660\\,539\\,068\\,92(52)\\times10^{-27}', '\\mathrm{kg}', 'Measured'],
+    ['Fine-structure constant', '\\alpha', '7.297\\,352\\,5643(11)\\times10^{-3}', '\\text{dimensionless}', 'Measured'],
+    ['Rydberg constant', 'R_{\\infty}', '10\\,973\\,731.568\\,157(12)', '\\mathrm{m^{-1}}', 'Measured'],
+    ['Bohr radius', 'a_{0}', '5.291\\,772\\,105\\,44(82)\\times10^{-11}', '\\mathrm{m}', 'Measured'],
+    ['Bohr magneton', '\\mu_{\\mathrm{B}}', '9.274\\,010\\,0657(29)\\times10^{-24}', '\\mathrm{J\\,T^{-1}}', 'Measured'],
+    ['Cu K\u03b11 X-ray wavelength', '\\lambda(\\mathrm{Cu\\,K}\\alpha_{1})', '1.540\\,562', '\\mathrm{\\AA}', 'Reference line (Bearden 1967)']
   ];
 
   return {
-    K, fmt, photonWavelength, photonAll, spectralRegion, wavelengthToRGB,
+    K, fmt, texNum, unitTeX, photonWavelength, photonAll, spectralRegion, wavelengthToRGB,
     braggD, braggTwoTheta, scherrer, projectile, ohm, resistors,
     UNITS, convert, CONSTANTS
   };
@@ -266,12 +291,18 @@ if (typeof document !== 'undefined') {
   const num = id => { const v = $(id).value.trim(); return v === '' ? NaN : Number(v); };
   const f = PHY.fmt;
 
+  const attr = s => String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  const T = tex => '<span data-tex="' + attr(tex) + '"></span>';               /* inline LaTeX */
+  const N = (x, unit) => T(PHY.texNum(x) + (unit ? '\\,' + unit : ''));        /* number + unit */
+  const DEG = x => T(PHY.texNum(x) + '^{\\circ}');                              /* number in degrees */
+  function typeset(el) { if (window.renderTeX) window.renderTeX(el); }
   function showError(el, msg) { el.innerHTML = '<div class="calc-error">' + esc(msg) + '</div>'; }
   function table(rows) {
     return '<table class="result-table">' + rows.map(r =>
       '<tr' + (r[2] ? ' class="result-highlight"' : '') + '><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'
     ).join('') + '</table>';
   }
+  function show(el, rows) { el.innerHTML = table(rows); typeset(el); }
   function safe(el, fn) { try { fn(); } catch (e) { showError(el, e.message); } }
 
   /* ----- tabs ----- */
@@ -295,13 +326,13 @@ if (typeof document !== 'undefined') {
       if (r.nm >= 380 && r.nm <= 750) {
         tag = '<span class="color-swatch" style="background:' + PHY.wavelengthToRGB(r.nm) + '"></span> ' + tag;
       }
-      out.innerHTML = table([
-        ['Wavelength &lambda;', f(r.nm) + ' nm &nbsp;(' + f(r.A) + ' &Aring; &middot; ' + f(r.um) + ' &micro;m)', true],
-        ['Photon energy E', f(r.eV) + ' eV', true],
-        ['Energy in joules', f(r.J) + ' J'],
-        ['Energy per mole of photons', f(r.kJmol) + ' kJ/mol'],
-        ['Frequency &nu;', f(r.THz) + ' THz &nbsp;(' + f(r.Hz) + ' Hz)'],
-        ['Wavenumber', f(r.cm1) + ' cm&#8315;&sup1;'],
+      show(out, [
+        ['Wavelength ' + T('\\lambda'), N(r.nm, '\\mathrm{nm}') + ' &nbsp;(' + N(r.A, '\\mathrm{\\AA}') + ' &middot; ' + N(r.um, '\\mu\\mathrm{m}') + ')', true],
+        ['Photon energy ' + T('E'), N(r.eV, '\\mathrm{eV}'), true],
+        ['Energy in joules', N(r.J, '\\mathrm{J}')],
+        ['Energy per mole of photons', N(r.kJmol, '\\mathrm{kJ\\,mol^{-1}}')],
+        ['Frequency ' + T('\\nu'), N(r.THz, '\\mathrm{THz}') + ' &nbsp;(' + N(r.Hz, '\\mathrm{Hz}') + ')'],
+        ['Wavenumber ' + T('\\tilde{\\nu}'), N(r.cm1, '\\mathrm{cm^{-1}}')],
         ['Spectral region', tag]
       ]);
     });
@@ -326,20 +357,20 @@ if (typeof document !== 'undefined') {
         tt = PHY.braggTwoTheta(lam, d, n);
       }
       const rows = [
-        ['2&theta;', f(tt) + '&deg; &nbsp;(&theta; = ' + f(tt / 2) + '&deg;)', $('br-mode').value === 'tt'],
-        ['d-spacing', f(d) + ' &Aring; &nbsp;(' + f(d / 10) + ' nm)', $('br-mode').value === 'd'],
-        ['Scattering vector Q = 2&pi;/d', f(2 * Math.PI / d) + ' &Aring;&#8315;&sup1;']
+        ['Peak position ' + T('2\\theta'), DEG(tt) + ' &nbsp;(' + T('\\theta=' + PHY.texNum(tt / 2) + '^{\\circ}') + ')', $('br-mode').value === 'tt'],
+        [T('d') + '-spacing', N(d, '\\mathrm{\\AA}') + ' &nbsp;(' + N(d / 10, '\\mathrm{nm}') + ')', $('br-mode').value === 'd'],
+        ['Scattering vector ' + T('Q=2\\pi/d'), N(2 * Math.PI / d, '\\mathrm{\\AA^{-1}}')]
       ];
       const h = num('br-h'), k = num('br-k'), l = num('br-l');
       if (isFinite(h) && isFinite(k) && isFinite(l)) {
         const s = h * h + k * k + l * l;
         if (s > 0) {
-          rows.push(['Cubic lattice parameter a, (' + h + ' ' + k + ' ' + l + ')', f(d * Math.sqrt(s)) + ' &Aring;', true]);
+          rows.push(['Cubic lattice parameter ' + T('a') + ' for ' + T('(h\\,k\\,l)=(' + h + '\\,' + k + '\\,' + l + ')'), N(d * Math.sqrt(s), '\\mathrm{\\AA}'), true]);
         } else {
-          rows.push(['Cubic lattice parameter a', 'h, k, l cannot all be zero']);
+          rows.push(['Cubic lattice parameter ' + T('a'), esc('h, k, l cannot all be zero')]);
         }
       }
-      out.innerHTML = table(rows);
+      show(out, rows);
     });
   }
 
@@ -349,10 +380,10 @@ if (typeof document !== 'undefined') {
     safe(out, () => {
       const inst = num('sc-inst');
       const r = PHY.scherrer(num('sc-k'), num('sc-lambda'), num('sc-tt'), num('sc-beta'), isFinite(inst) ? inst : 0);
-      out.innerHTML = table([
-        ['Corrected FWHM &beta;', f(r.corrDeg) + '&deg; &nbsp;(' + f(r.betaRad) + ' rad)'],
-        ['Crystallite size D', f(r.D_nm) + ' nm', true],
-        ['Crystallite size D', f(r.D_A) + ' &Aring;']
+      show(out, [
+        ['Corrected FWHM ' + T('\\beta_{\\mathrm{corr}}'), DEG(r.corrDeg) + ' &nbsp;(' + N(r.betaRad, '\\mathrm{rad}') + ')'],
+        ['Crystallite size ' + T('D'), N(r.D_nm, '\\mathrm{nm}'), true],
+        ['Crystallite size ' + T('D'), N(r.D_A, '\\mathrm{\\AA}')]
       ]);
     });
   }
@@ -410,14 +441,14 @@ if (typeof document !== 'undefined') {
     safe(out, () => {
       const v0 = num('pr-v'), a = num('pr-a'), h0 = num('pr-h'), g = num('pr-g');
       const p = PHY.projectile(v0, a, h0, g);
-      out.innerHTML = table([
-        ['Time of flight', f(p.T) + ' s', true],
-        ['Horizontal range', f(p.R) + ' m', true],
-        ['Maximum height', f(p.H) + ' m'],
-        ['Time to reach maximum height', f(p.tPeak) + ' s'],
-        ['Components of launch velocity', 'v<sub>x</sub> = ' + f(p.vx) + ' m/s, v<sub>y</sub> = ' + f(p.vy) + ' m/s'],
-        ['Impact speed', f(p.vImpact) + ' m/s'],
-        ['Impact angle below horizontal', f(p.angleImpact) + '&deg;']
+      show(out, [
+        ['Time of flight ' + T('T'), N(p.T, '\\mathrm{s}'), true],
+        ['Horizontal range ' + T('R'), N(p.R, '\\mathrm{m}'), true],
+        ['Maximum height ' + T('H'), N(p.H, '\\mathrm{m}')],
+        ['Time to maximum height ' + T('t_{\\mathrm{peak}}'), N(p.tPeak, '\\mathrm{s}')],
+        ['Launch velocity components', T('v_x=' + PHY.texNum(p.vx) + '\\,\\mathrm{m\\,s^{-1}},\\quad v_y=' + PHY.texNum(p.vy) + '\\,\\mathrm{m\\,s^{-1}}')],
+        ['Impact speed', N(p.vImpact, '\\mathrm{m\\,s^{-1}}')],
+        ['Impact angle below horizontal', DEG(p.angleImpact)]
       ]);
       drawTrajectory(p, h0, g, v0, a);
     });
@@ -430,11 +461,11 @@ if (typeof document !== 'undefined') {
       const given = { V: num('oh-v'), I: num('oh-i'), R: num('oh-r'), P: num('oh-p') };
       const r = PHY.ohm(given);
       const hl = k => !isFinite(given[k]);
-      out.innerHTML = table([
-        ['Voltage V', f(r.V) + ' V', hl('V')],
-        ['Current I', f(r.I) + ' A', hl('I')],
-        ['Resistance R', f(r.R) + ' &Omega;', hl('R')],
-        ['Power P', f(r.P) + ' W', hl('P')]
+      show(out, [
+        ['Voltage ' + T('V'), N(r.V, '\\mathrm{V}'), hl('V')],
+        ['Current ' + T('I'), N(r.I, '\\mathrm{A}'), hl('I')],
+        ['Resistance ' + T('R'), N(r.R, '\\Omega'), hl('R')],
+        ['Power ' + T('P'), N(r.P, '\\mathrm{W}'), hl('P')]
       ]);
     });
   }
@@ -445,10 +476,10 @@ if (typeof document !== 'undefined') {
       const vals = parts.map(Number);
       if (vals.some(v => !isFinite(v))) throw new Error('Use numbers only, separated by commas.');
       const r = PHY.resistors(vals);
-      out.innerHTML = table([
-        ['Number of resistors', String(vals.length)],
-        ['Series equivalent', f(r.series) + ' &Omega;', true],
-        ['Parallel equivalent', f(r.parallel) + ' &Omega;', true]
+      show(out, [
+        ['Number of resistors ' + T('n'), String(vals.length)],
+        ['Series equivalent ' + T('R_{\\mathrm{series}}'), N(r.series, '\\Omega'), true],
+        ['Parallel equivalent ' + T('R_{\\mathrm{parallel}}'), N(r.parallel, '\\Omega'), true]
       ]);
     });
   }
@@ -467,22 +498,20 @@ if (typeof document !== 'undefined') {
     safe(out, () => {
       const v = num('un-value'), from = $('un-from').value, to = $('un-to').value;
       const r = PHY.convert($('un-cat').value, v, from, to);
-      out.innerHTML = table([[esc(f(v) + ' ' + from) + ' =', esc(f(r) + ' ' + to), true]]);
+      show(out, [[T(PHY.texNum(v) + '\\,' + PHY.unitTeX(from) + '\\;='), T(PHY.texNum(r) + '\\,' + PHY.unitTeX(to)), true]]);
     });
   }
 
   /* ----- Constants ----- */
   function drawConstants(q) {
     const term = q.toLowerCase().trim();
-    const tmp = document.createElement('div');
-    const rows = PHY.CONSTANTS.filter(c => {
-      if (!term) return true;
-      tmp.innerHTML = c[0] + ' ' + c[1];
-      return tmp.textContent.toLowerCase().includes(term);
-    });
-    $('cs-rows').innerHTML = rows.length
-      ? rows.map(c => '<tr><td>' + c[0] + '</td><td>' + c[1] + '</td><td>' + c[2] + '</td><td>' + c[3] + '</td><td>' + c[4] + '</td></tr>').join('')
+    const plain = c => (c[0] + ' ' + c[1]).replace(/\\mathrm|\\text|\\dfrac|\\/g, '').replace(/[{}]/g, '').toLowerCase();
+    const rows = PHY.CONSTANTS.filter(c => !term || plain(c).includes(term));
+    const el = $('cs-rows');
+    el.innerHTML = rows.length
+      ? rows.map(c => '<tr><td>' + c[0] + '</td><td>' + T(c[1]) + '</td><td>' + T(c[2]) + '</td><td>' + T(c[3]) + '</td><td>' + c[4] + '</td></tr>').join('')
       : '<tr><td colspan="5">No constant matches &ldquo;' + esc(q) + '&rdquo;.</td></tr>';
+    typeset(el);
   }
 
   /* ----- wire up ----- */

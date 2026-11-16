@@ -19,7 +19,7 @@
   <div class="calc-panel active" id="panel-photon">
     <div class="calc-card">
       <h3>Photon Energy &harr; Wavelength &harr; Frequency</h3>
-      <p class="calc-formula">E = hc / &lambda; = h&nu; &nbsp;&middot;&nbsp; hc = 1239.842 eV&middot;nm</p>
+      <p class="calc-formula"><span data-tex="E=\dfrac{hc}{\lambda}=h\nu" data-display="block"></span><span data-tex="hc\approx 1239.842\ \mathrm{eV\,nm}" data-display="block"></span></p>
       <div class="calc-grid">
         <label><span>Value</span>
           <input type="number" step="any" id="ph-value" value="550">
@@ -40,7 +40,7 @@
       </div>
       <button class="calc-btn" id="ph-btn">Convert</button>
       <div class="calc-result" id="ph-result"></div>
-      <p class="calc-note">Type any one quantity and choose its unit &mdash; all the others are calculated. For a semiconductor, enter the band gap in eV to get the absorption-edge wavelength. Constants use the exact SI (2019) values of h, c, e and N<sub>A</sub>. Region boundaries (e.g. visible = 380&ndash;750 nm) are conventional and differ slightly between sources.</p>
+      <p class="calc-note">Type any one quantity and choose its unit &mdash; all the others are calculated. For a semiconductor, enter the band gap in eV to get the absorption-edge wavelength. Constants use the exact SI (2019) values of <span data-tex="h"></span>, <span data-tex="c"></span>, <span data-tex="e"></span> and <span data-tex="N_{\mathrm{A}}"></span>. Region boundaries (e.g. visible = 380&ndash;750 nm) are conventional and differ slightly between sources.</p>
     </div>
   </div>
 
@@ -48,7 +48,7 @@
   <div class="calc-panel" id="panel-bragg">
     <div class="calc-card">
       <h3>Bragg&rsquo;s Law (X-ray Diffraction)</h3>
-      <p class="calc-formula">n&lambda; = 2d sin&theta; &nbsp;&middot;&nbsp; a = d&radic;(h&sup2;+k&sup2;+l&sup2;) (cubic)</p>
+      <p class="calc-formula"><span data-tex="n\lambda=2d\sin\theta" data-display="block"></span><span data-tex="a=d\sqrt{h^{2}+k^{2}+l^{2}}\quad\text{(cubic)}" data-display="block"></span><span data-tex="Q=\dfrac{2\pi}{d}" data-display="block"></span></p>
       <div class="calc-grid">
         <label><span>Calculate</span>
           <select id="br-mode">
@@ -87,7 +87,7 @@
       </div>
       <button class="calc-btn" id="br-btn">Calculate</button>
       <div class="calc-result" id="br-result"></div>
-      <p class="calc-note">Enter (h k l) only if the material is cubic and you want the lattice parameter a. Q = 2&pi;/d is the scattering vector. Preset wavelengths are the standard Bearden (1967) K&alpha; lines; the &ldquo;avg&rdquo; entries are the K&alpha;1:K&alpha;2 = 2:1 intensity-weighted means used by NIST. Choose &ldquo;Custom&rdquo; or edit the wavelength box for any other source.</p>
+      <p class="calc-note">Enter <span data-tex="(h\,k\,l)"></span> only if the material is cubic and you want the lattice parameter <span data-tex="a"></span>. <span data-tex="Q=2\pi/d"></span> is the scattering vector. Preset wavelengths are the standard Bearden (1967) K&alpha; lines; the &ldquo;avg&rdquo; entries are the K&alpha;1&thinsp;:&thinsp;K&alpha;2 = 2&thinsp;:&thinsp;1 intensity-weighted means used by NIST. Choose &ldquo;Custom&rdquo; or edit the wavelength box for any other source.</p>
     </div>
   </div>
 
@@ -95,7 +95,7 @@
   <div class="calc-panel" id="panel-scherrer">
     <div class="calc-card">
       <h3>Scherrer Equation &ndash; Crystallite Size</h3>
-      <p class="calc-formula">D = K&lambda; / (&beta; cos&theta;) &nbsp;&middot;&nbsp; &beta;<sub>corr</sub> = &radic;(&beta;<sub>obs</sub>&sup2; &minus; &beta;<sub>inst</sub>&sup2;)</p>
+      <p class="calc-formula"><span data-tex="D=\dfrac{K\lambda}{\beta\cos\theta}" data-display="block"></span><span data-tex="\beta_{\mathrm{corr}}=\sqrt{\beta_{\mathrm{obs}}^{2}-\beta_{\mathrm{inst}}^{2}}" data-display="block"></span></p>
       <div class="calc-grid">
         <label><span>Shape factor K</span>
           <input type="number" step="any" id="sc-k" value="0.9">
@@ -115,7 +115,7 @@
       </div>
       <button class="calc-btn" id="sc-btn">Calculate</button>
       <div class="calc-result" id="sc-result"></div>
-      <p class="calc-note">&beta; is the full width at half maximum of the diffraction peak, entered in degrees of 2&theta; (it is converted to radians internally). K &asymp; 0.9 for spherical crystallites. Peak width also depends on strain and instrument, so the result is a lower bound on size; the equation is meaningful only for crystallites below roughly 100&ndash;200 nm. The correction assumes Gaussian peak shapes.</p>
+      <p class="calc-note"><span data-tex="\beta"></span> is the full width at half maximum of the diffraction peak, entered in degrees of <span data-tex="2\theta"></span> (it is converted to radians internally). <span data-tex="K\approx 0.9"></span> for spherical crystallites. Peak width also depends on strain and instrument, so the result is a lower bound on size; the equation is meaningful only for crystallites below roughly 100&ndash;200 nm. The correction assumes Gaussian peak shapes.</p>
     </div>
   </div>
 
@@ -123,7 +123,7 @@
   <div class="calc-panel" id="panel-projectile">
     <div class="calc-card">
       <h3>Projectile Motion</h3>
-      <p class="calc-formula">x = v&#8320;cos&alpha;&middot;t &nbsp;&middot;&nbsp; y = h&#8320; + v&#8320;sin&alpha;&middot;t &minus; &frac12;gt&sup2;</p>
+      <p class="calc-formula"><span data-tex="x=v_0\cos\alpha\,t\qquad y=h_0+v_0\sin\alpha\,t-\dfrac{1}{2}gt^{2}" data-display="block"></span><span data-tex="T=\dfrac{v_y+\sqrt{v_y^{2}+2gh_0}}{g}\qquad R=v_xT\qquad H=h_0+\dfrac{v_y^{2}}{2g}" data-display="block"></span></p>
       <div class="calc-grid">
         <label><span>Launch speed v&#8320; (m/s)</span>
           <input type="number" step="any" id="pr-v" value="30">
@@ -141,7 +141,7 @@
       <button class="calc-btn" id="pr-btn">Calculate &amp; Plot</button>
       <div class="calc-result" id="pr-result"></div>
       <div class="plot-wrap"><canvas id="pr-canvas" width="760" height="320"></canvas></div>
-      <p class="calc-note">Ideal motion in a vacuum &mdash; air resistance is ignored, and the ground is flat at y = 0. Use g = 1.62 for the Moon or 3.73 for Mars (NASA mean surface gravity). Angles range from &minus;90&deg; (straight down) to 90&deg; (straight up).</p>
+      <p class="calc-note">Ideal motion in a vacuum &mdash; air resistance is ignored, and the ground is flat at <span data-tex="y=0"></span>. Use <span data-tex="g=1.62\,\mathrm{m\,s^{-2}}"></span> for the Moon or <span data-tex="g=3.73\,\mathrm{m\,s^{-2}}"></span> for Mars (NASA mean surface gravity). Angles range from <span data-tex="-90^{\circ}"></span> (straight down) to <span data-tex="90^{\circ}"></span> (straight up). The formula for <span data-tex="H"></span> applies when the launch is upward; otherwise the maximum height is <span data-tex="h_0"></span>.</p>
     </div>
   </div>
 
@@ -149,7 +149,7 @@
   <div class="calc-panel" id="panel-ohm">
     <div class="calc-card">
       <h3>Ohm&rsquo;s Law &amp; Power</h3>
-      <p class="calc-formula">V = IR &nbsp;&middot;&nbsp; P = VI = I&sup2;R = V&sup2;/R</p>
+      <p class="calc-formula"><span data-tex="V=IR" data-display="block"></span><span data-tex="P=VI=I^{2}R=\dfrac{V^{2}}{R}" data-display="block"></span></p>
       <div class="calc-grid">
         <label><span>Voltage V (volts)</span><input type="number" step="any" id="oh-v" value="12"></label>
         <label><span>Current I (amperes)</span><input type="number" step="any" id="oh-i"></label>
@@ -161,7 +161,7 @@
       <div class="calc-result" id="oh-result"></div>
 
       <h3 style="margin-top:30px;">Resistor Combinations</h3>
-      <p class="calc-formula">R<sub>series</sub> = &Sigma;R &nbsp;&middot;&nbsp; 1/R<sub>parallel</sub> = &Sigma;(1/R)</p>
+      <p class="calc-formula"><span data-tex="R_{\mathrm{series}}=\sum_{i=1}^{n}R_i" data-display="block"></span><span data-tex="\dfrac{1}{R_{\mathrm{parallel}}}=\sum_{i=1}^{n}\dfrac{1}{R_i}" data-display="block"></span></p>
       <div class="calc-grid">
         <label><span>Resistor values in ohms (separate with commas)</span>
           <input type="text" id="rs-list" value="100, 220, 330">
@@ -186,7 +186,7 @@
       </div>
       <button class="calc-btn" id="un-btn">Convert</button>
       <div class="calc-result" id="un-result"></div>
-      <p class="calc-note">Oersted &harr; A/m uses 1 Oe = 1000/(4&pi;) A/m. Gauss &harr; tesla uses 1 G = 10&#8315;&#8308; T. Calories are the thermochemical calorie (4.184 J), and mmHg is the conventional value (133.322387 Pa).</p>
+      <p class="calc-note">Oersted &harr; A/m uses <span data-tex="1\,\mathrm{Oe}=\tfrac{1000}{4\pi}\,\mathrm{A\,m^{-1}}"></span>. Gauss &harr; tesla uses <span data-tex="1\,\mathrm{G}=10^{-4}\,\mathrm{T}"></span>. Calories are the thermochemical calorie (<span data-tex="4.184\,\mathrm{J}"></span>), and mmHg is the conventional value (<span data-tex="133.322387\,\mathrm{Pa}"></span>).</p>
     </div>
   </div>
 

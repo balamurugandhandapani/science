@@ -793,3 +793,18 @@ select.insert-el {
 .const-table { min-width: 560px; }
 .const-table td { padding: 8px; border-bottom: 1px solid var(--line); font-size: 12.5px; }
 .const-table td:nth-child(3) { font-family: 'IBM Plex Mono', monospace; white-space: nowrap; }
+
+/* ==============================
+   LaTeX FORMULAS (KaTeX, self-hosted)
+============================== */
+.calc-formula { max-width: 100%; box-sizing: border-box; overflow-x: auto; }
+.calc-formula .katex { font-size: 1.35em; }
+.calc-formula .katex-display { margin: 0.35em 0; overflow-x: auto; overflow-y: hidden; }
+.calc-formula .katex-display > .katex { white-space: nowrap; }
+.calc-note .katex, .sources-note .katex { font-size: 1.08em; }
+.result-table .katex, .const-table .katex { font-size: 1.08em; }
+.result-table td:last-child .katex { color: inherit; }
+
+/* Simulations */
+.calc-grid input[type=range] { padding: 0; accent-color: var(--accent); }
+.calc-grid label b { color: var(--accent); }

@@ -15,7 +15,7 @@
   <div class="calc-panel" id="panel-tolerance">
     <div class="calc-card">
       <h3>Goldschmidt Tolerance Factor</h3>
-      <p class="calc-formula">t = (r<sub>A</sub> + r<sub>O</sub>) / [&radic;2 &times; (r<sub>B avg</sub> + r<sub>O</sub>)]</p>
+      <p class="calc-formula"><span data-tex="t=\dfrac{r_A+r_O}{\sqrt{2}\,\left(r_{B,\mathrm{avg}}+r_O\right)}" data-display="block"></span><span data-tex="r_{B,\mathrm{avg}}=\dfrac{r_B+r_{B^{\prime}}}{2}" data-display="block"></span></p>
       <div class="calc-grid">
         <label>Compound name <input type="text" id="tf-compound" value="Sr2TiMnO6"></label>
         <label><span>r<sub>A</sub> &ndash; A-site radius (&Aring;)</span> <input type="number" step="0.0001" id="tf-ra" value="1.44"></label>
@@ -25,7 +25,7 @@
       </div>
       <button class="calc-btn" onclick="calcTolerance()">Calculate</button>
       <div class="calc-result" id="tf-result"></div>
-      <p class="calc-note">Stability guide: t = 0.9&ndash;1.0 ideal cubic perovskite &middot; t = 0.71&ndash;0.9 orthorhombic/rhombohedral (tilted) &middot; t &gt; 1.0 hexagonal &middot; t &lt; 0.71 not perovskite-forming. Uses Shannon ionic radii for the relevant coordination number/oxidation state; r<sub>O</sub> is typically 1.40 &Aring; (6-coordinate O<sup>2-</sup>).</p>
+      <p class="calc-note">Stability guide: <span data-tex="0.9\le t\le 1.0"></span> ideal cubic perovskite &middot; <span data-tex="0.71\le t<0.9"></span> orthorhombic/rhombohedral (tilted) &middot; <span data-tex="t>1.0"></span> hexagonal &middot; <span data-tex="t<0.71"></span> not perovskite-forming. Uses Shannon ionic radii for the relevant coordination number/oxidation state; <span data-tex="r_O"></span> is typically <span data-tex="1.40\,\mathrm{\AA}"></span> (6-coordinate <span data-tex="\mathrm{O^{2-}}"></span>).</p>
     </div>
   </div>
 

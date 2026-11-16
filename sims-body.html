@@ -1,0 +1,53 @@
+<main class="explorer-wrap" id="explorer" name="top">
+  <div class="explorer-intro">
+    <p class="eyebrow">Interactive Simulations &middot; Mechanics, Waves, Quantum &amp; Crystals</p>
+    <h2>Physics Simulations</h2>
+    <p>Move the sliders and watch the physics respond &mdash; a pendulum, double-slit interference, the photoelectric effect and Bragg diffraction. Every number on the screen is computed live from the equations shown.</p>
+  </div>
+  <div class="calc-tabs" id="calcTabs"><button class="calc-tab active" data-tab="pe">Pendulum Lab</button><button class="calc-tab" data-tab="wv">Double Slit</button><button class="calc-tab" data-tab="ph">Photoelectric Effect</button><button class="calc-tab" data-tab="br">Bragg Diffraction</button></div>
+
+  <div class="calc-panel active" id="panel-pe"><div class="calc-card">
+    <h3>Simple Pendulum Lab</h3>
+    <p class="calc-formula"><span data-tex="\ddot\theta=-\dfrac{g}{L}\sin\theta-b\,\dot\theta" data-display="block"></span><span data-tex="T_0=2\pi\sqrt{\dfrac{L}{g}}\qquad T=\dfrac{T_0}{\mathrm{AGM}\left(1,\cos\frac{\theta_0}{2}\right)}" data-display="block"></span></p>
+    <div class="calc-grid"><label><span>Gravity</span><select id="pe-g"><option value="9.80665" selected>Earth &ndash; 9.80665 m/s&sup2;</option><option value="1.62">Moon &ndash; 1.62 m/s&sup2;</option><option value="3.73">Mars &ndash; 3.73 m/s&sup2;</option><option value="24.79">Jupiter &ndash; 24.79 m/s&sup2;</option></select></label></div>
+    <div class="calc-grid" id="pe-ctl"></div>
+    <button class="calc-btn" id="pe-go">&#9654; Start</button> <button class="calc-btn-sm" id="pe-rs" type="button">Reset</button>
+    <div class="plot-wrap"><canvas id="pe-cv" width="760" height="320"></canvas></div>
+    <div class="calc-result" id="pe-out"></div>
+    <p class="calc-note">Integrated numerically (4th-order Runge&ndash;Kutta), so large angles are exact &mdash; no small-angle approximation. The period does not depend on the mass, but the energy does. The exact period uses the arithmetic&ndash;geometric mean (AGM); for small angles it approaches <span data-tex="T_0"></span>. Damping <span data-tex="b"></span> makes the swing die away.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-wv"><div class="calc-card">
+    <h3>Double-Slit Interference</h3>
+    <p class="calc-formula"><span data-tex="d\sin\theta=m\lambda\qquad\Delta y\approx\dfrac{\lambda D}{d}" data-display="block"></span><span data-tex="I(\theta)=I_0\cos^{2}\!\left(\dfrac{\pi d\sin\theta}{\lambda}\right)\left[\dfrac{\sin\beta}{\beta}\right]^{2},\quad\beta=\dfrac{\pi a\sin\theta}{\lambda}" data-display="block"></span></p>
+    <div class="calc-grid" id="wv-ctl"></div>
+    <div class="plot-wrap"><canvas id="wv-cv" width="760" height="340"></canvas></div>
+    <div class="calc-result" id="wv-out"></div>
+    <p class="calc-note">The fast cosine fringes come from the two slits (<span data-tex="d"></span>); the slow envelope comes from the width of each slit (<span data-tex="a"></span>). Make the slits narrower and the envelope widens; move them further apart and the fringes get closer. Far-field (Fraunhofer) model with the screen distance <span data-tex="D"></span>.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-ph"><div class="calc-card">
+    <h3>Photoelectric Effect</h3>
+    <p class="calc-formula"><span data-tex="E=hf=\dfrac{hc}{\lambda}\qquad K_{\max}=hf-\phi" data-display="block"></span><span data-tex="eV_s=K_{\max}\qquad f_0=\dfrac{\phi}{h}" data-display="block"></span></p>
+    <div class="calc-grid">
+      <label><span>Metal (work function <span data-tex="\phi"></span>)</span><select id="ph-m"><option value="2.1">Caesium &ndash; 2.1 eV</option><option value="2.3">Potassium &ndash; 2.3 eV</option><option value="2.28" selected>Sodium &ndash; 2.28 eV</option><option value="3.68">Magnesium &ndash; 3.68 eV</option><option value="4.08">Aluminium &ndash; 4.08 eV</option><option value="4.3">Zinc &ndash; 4.3 eV</option><option value="custom">Custom &hellip;</option></select></label>
+      <label id="ph-cw" style="display:none"><span>Custom &phi; (eV)</span><input type="number" id="ph-phi" step="0.01" min="0.5" max="8" value="3"></label>
+    </div>
+    <div class="calc-grid" id="ph-ctl"></div>
+    <div class="plot-wrap"><canvas id="ph-cv" width="760" height="260"></canvas></div>
+    <div class="plot-wrap"><canvas id="ph-iv" width="760" height="230"></canvas></div>
+    <div class="calc-result" id="ph-out"></div>
+    <p class="calc-note">Below the threshold frequency <em>no</em> electrons come out however bright the light; above it, brightness changes how many (the current), while the colour sets their maximum energy. A negative collector voltage repels electrons until none arrive at <span data-tex="V=-V_s"></span>. The current curve is an idealised straight-line model. Work functions are typical polycrystalline values (HyperPhysics, from the CRC Handbook) and vary by about 5&ndash;10% with surface condition.</p>
+  </div></div>
+
+  <div class="calc-panel" id="panel-br"><div class="calc-card">
+    <h3>Bragg Diffraction</h3>
+    <p class="calc-formula"><span data-tex="2d\sin\theta=n\lambda" data-display="block"></span><span data-tex="I(\theta)\propto\left[\dfrac{\sin(N\delta/2)}{\sin(\delta/2)}\right]^{2},\qquad\delta=\dfrac{4\pi d\sin\theta}{\lambda}" data-display="block"></span></p>
+    <div class="calc-grid" id="br-ctl"></div>
+    <div class="plot-wrap"><canvas id="br-cv" width="760" height="380"></canvas></div>
+    <div class="calc-result" id="br-out"></div>
+    <p class="calc-note">Rays reflecting from neighbouring planes travel an extra path <span data-tex="2d\sin\theta"></span>; when that equals a whole number of wavelengths they add up and a strong peak appears. With more planes <span data-tex="N"></span> the peaks get sharper &mdash; the reason very small crystals give broad X-ray peaks (the Scherrer equation).</p>
+  </div></div>
+
+  <p class="sources-note">Inspired by the interactive-simulation approach of the <a href="https://phet.colorado.edu" target="_blank" rel="noopener">PhET Interactive Simulations</a> project (University of Colorado Boulder). These simulations are original work &mdash; written from scratch, using none of PhET&rsquo;s code, artwork or branding &mdash; and are not affiliated with or endorsed by PhET.</p>
+</main>

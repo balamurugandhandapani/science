@@ -36,6 +36,15 @@ Original graphics
 Original documentation
 Original project implementation
 
+Third-Party Software Included
+
+KaTeX (version 0.16.47) - https://katex.org
+Used to typeset mathematical formulas (LaTeX) on the Physics Tools and Stoichiometry pages.
+Files: katex/katex.min.js, katex/katex.min.css, katex/fonts/*.woff2
+Copyright (c) 2013-2020 Khan Academy and other contributors.
+Licensed under the MIT License - the full licence text is included in katex/LICENSE.
+KaTeX is NOT part of the original work claimed above; it remains the property of its authors.
+
 © 2026 Balamurugan Dhandapani (Balamurugan D). All Rights Reserved.
 
 For complete ownership and usage terms, see LICENSE.md.
