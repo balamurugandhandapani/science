@@ -7,19 +7,20 @@
 (function () {
   const $ = id => document.getElementById(id), root = $('simGallery'); if (!root) return;
   const SIMS = [
-    { id: 'pe', t: 'Pendulum Lab', cat: 'Mechanics', d: 'Swing it on any planet and measure the period.', a: '#4568dc', b: '#b06ab3' },
-    { id: 'pj', t: 'Projectile + Air', cat: 'Mechanics', d: 'Fire a ball and see what air resistance does.', a: '#cb2d3e', b: '#ef473a' },
-    { id: 'sp', t: 'Mass & Spring', cat: 'Mechanics', d: 'Hooke\u2019s law, damping and energy swapping.', a: '#0083b0', b: '#00b4db' },
-    { id: 'wv', t: 'Double Slit', cat: 'Waves & Light', d: 'Light waves add up into bright and dark fringes.', a: '#8e2de2', b: '#4a00e0' },
-    { id: 'bb', t: 'Blackbody Spectrum', cat: 'Waves & Light', d: 'Heat an object and watch its colour and spectrum.', a: '#f12711', b: '#f5af19' },
-    { id: 'ph', t: 'Photoelectric Effect', cat: 'Quantum & Atoms', d: 'Which colours of light can free electrons from metal?', a: '#f7971e', b: '#d9a300' },
-    { id: 'hy', t: 'Hydrogen Atom', cat: 'Quantum & Atoms', d: 'Electron jumps make the Balmer lines.', a: '#2b32b2', b: '#1488cc' },
-    { id: 'rd', t: 'Radioactive Decay', cat: 'Quantum & Atoms', d: 'Random decays follow a smooth half-life curve.', a: '#5aa00a', b: '#b5d33d' },
-    { id: 'br', t: 'Bragg Diffraction', cat: 'Crystals & Circuits', d: 'When do X-rays reflect from atomic planes?', a: '#134e5e', b: '#4fae8a' },
-    { id: 'dc', t: 'DC Circuit', cat: 'Crystals & Circuits', d: 'Series and parallel resistors with flowing current.', a: '#f953c6', b: '#b91d73' }
+    { id: 'pe', t: 'Pendulum Lab', cat: 'Mechanics', d: 'Swing it on any planet and measure the period.', a: '#800000', b: '#b5483a' },
+    { id: 'pj', t: 'Projectile + Air', cat: 'Mechanics', d: 'Fire a ball and see what air resistance does.', a: '#9a3412', b: '#d9772b' },
+    { id: 'sp', t: 'Mass & Spring', cat: 'Mechanics', d: 'Hooke\u2019s law, damping and energy swapping.', a: '#6d2a3a', b: '#b0566b' },
+    { id: 'wv', t: 'Double Slit', cat: 'Waves & Light', d: 'Light waves add up into bright and dark fringes.', a: '#0b5f7a', b: '#1b8aa8' },
+    { id: 'bb', t: 'Blackbody Spectrum', cat: 'Waves & Light', d: 'Heat an object and watch its colour and spectrum.', a: '#0a5568', b: '#2a9db8' },
+    { id: 'ph', t: 'Photoelectric Effect', cat: 'Quantum & Atoms', d: 'Which colours of light can free electrons from metal?', a: '#5b3fa0', b: '#8160cc' },
+    { id: 'hy', t: 'Hydrogen Atom', cat: 'Quantum & Atoms', d: 'Electron jumps make the Balmer lines.', a: '#4a3590', b: '#7258c4' },
+    { id: 'rd', t: 'Radioactive Decay', cat: 'Quantum & Atoms', d: 'Random decays follow a smooth half-life curve.', a: '#6b3f9e', b: '#9566c8' },
+    { id: 'br', t: 'Bragg Diffraction', cat: 'Crystals & Circuits', d: 'When do X-rays reflect from atomic planes?', a: '#1f6b4a', b: '#3f9a74' },
+    { id: 'dc', t: 'DC Circuit', cat: 'Crystals & Circuits', d: 'Series and parallel resistors with flowing current.', a: '#2a7a52', b: '#58b085' }
   ];
   const CATS = ['All', 'Mechanics', 'Waves & Light', 'Quantum & Atoms', 'Crystals & Circuits'];
   const TAU = Math.PI * 2;
+  const CCOL = { 'All': '#013938', 'Mechanics': '#800000', 'Waves & Light': '#0b5f7a', 'Quantum & Atoms': '#5b3fa0', 'Crystals & Circuits': '#1f6b4a' };
 
   /* ---------- animated previews: (ctx, W, H, t seconds) ---------- */
   const W = 260, H = 150;
@@ -39,8 +40,7 @@
     bb(c, t) { const T = 3200 + 2800 * (0.5 + 0.5 * Math.sin(t * 0.9)), X = l => 14 + (l - 100) / 2000 * (W - 28);
       for (let l = 380; l <= 750; l += 3) { c.fillStyle = SIM.rgb(l, 0.5); c.fillRect(X(l), 10, 1.6, H - 30); }
       let mx = 0; for (let l = 100; l <= 2100; l += 25) mx = Math.max(mx, SIM2.planck(l * 1e-9, T));
-      c.strokeStyle = '#fff'; c.lineWidth = 2.5; c.beginPath(); for (let l = 100; l <= 2100; l += 25) { const y = H - 14 - (H - 44) * SIM2.planck(l * 1e-9, T) / mx; l === 100 ? c.moveTo(X(l), y) : c.lineTo(X(l), y); } c.stroke();
-      c.fillStyle = '#fff'; c.font = 'bold 12px sans-serif'; c.fillText(Math.round(T / 10) * 10 + ' K', 106, 22); },
+      c.strokeStyle = '#fff'; c.lineWidth = 2.5; c.beginPath(); for (let l = 100; l <= 2100; l += 25) { const y = H - 14 - (H - 44) * SIM2.planck(l * 1e-9, T) / mx; l === 100 ? c.moveTo(X(l), y) : c.lineTo(X(l), y); } c.stroke();  },
     ph(c, t) { c.fillStyle = 'rgba(255,255,255,.8)'; c.fillRect(24, 12, 14, H - 24); c.fillRect(W - 38, 12, 14, H - 24);
       for (let i = 0; i < 7; i++) { const u = (t * 0.55 + i / 7) % 1, y = 22 + ((i * 37) % (H - 50));
         if (u < 0.4) { const x = -10 + u / 0.4 * 40; c.strokeStyle = '#fff'; c.lineWidth = 3; c.beginPath(); c.moveTo(x - 12, y - 7); c.lineTo(x, y); c.stroke(); }
@@ -50,8 +50,7 @@
       const y = ph < 0.5 ? ys[2] : ys[2] + (ys[1] - ys[2]) * Math.min(1, (ph - 0.5) * 4); c.fillStyle = '#fff'; c.beginPath(); c.arc(90, y, 7, 0, 7); c.fill();
       if (ph >= 0.5) { c.strokeStyle = '#ff6b6b'; c.lineWidth = 3; c.beginPath(); for (let i = 0; i < 70; i++) { const x = 104 + i * 1.9 + (ph - 0.5) * 50, yy = ys[1] + Math.sin(i * 0.8) * 7 * (1 - i / 80); i ? c.lineTo(x, yy) : c.moveTo(x, yy); } c.stroke(); } },
     rd(c, t) { const rem = Math.pow(2, -(t % 9) / 2.2); let n = 0;
-      for (let i = 0; i < 60; i++) { const r = ((i * 9301 + 49297) % 233280) / 233280, alive = r < rem; if (alive) n++; c.fillStyle = alive ? '#fff' : 'rgba(255,255,255,.2)'; c.beginPath(); c.arc(22 + (i % 10) * 24, 26 + Math.floor(i / 10) * 20, 6, 0, 7); c.fill(); }
-      c.fillStyle = '#fff'; c.font = 'bold 12px sans-serif'; c.fillText(n + ' left', 12, H - 8); },
+      for (let i = 0; i < 60; i++) { const r = ((i * 9301 + 49297) % 233280) / 233280, alive = r < rem; if (alive) n++; c.fillStyle = alive ? '#fff' : 'rgba(255,255,255,.2)'; c.beginPath(); c.arc(22 + (i % 10) * 24, 26 + Math.floor(i / 10) * 20, 6, 0, 7); c.fill(); }  },
     br(c, t) { const th = 0.35 + 0.2 * Math.sin(t * 1.2), d = 34;
       for (let k = 0; k < 3; k++) for (let x = 20; x < W - 10; x += 26) { c.fillStyle = 'rgba(255,255,255,.85)'; c.beginPath(); c.arc(x, 70 + k * d, 5, 0, 7); c.fill(); }
       const ray = (xh, yh, col) => { c.strokeStyle = col; c.lineWidth = 2; c.beginPath(); c.moveTo(xh - 70 * Math.cos(th), yh - 70 * Math.sin(th)); c.lineTo(xh, yh); c.lineTo(xh + 70 * Math.cos(th), yh - 70 * Math.sin(th)); c.stroke(); };
@@ -62,15 +61,31 @@
       c.fillStyle = '#cdf3ff'; for (let k = 0; k < 16; k++) { let s = ((k / 16 + t * 0.22) % 1) * len, x, y; if (s < a) { x = 30 + s; y = 30; } else if ((s -= a) < b) { x = W - 30; y = 30 + s; } else if ((s -= b) < a) { x = W - 30 - s; y = H - 30; } else { s -= a; x = 30; y = H - 30 - s; } c.beginPath(); c.arc(x, y, 3.6, 0, 7); c.fill(); } }
   };
 
+
+  /* ---------- live readout printed on each screen, computed from the same time t ---------- */
+  const RO = {
+    pe: t => '\u03b8 = ' + (0.75 * Math.cos(t * 2.8) * 180 / Math.PI).toFixed(0) + '\u00b0',
+    pj: t => 't = ' + (((t * 0.35) % 1) * 1.8).toFixed(2) + ' s',
+    sp: t => 'x = ' + (4 * Math.cos(t * 3.9)).toFixed(1) + ' cm',
+    wv: t => '\u03bb = ' + Math.round(470 + 130 * (0.5 + 0.5 * Math.sin(t * 0.9))) + ' nm',
+    bb: t => 'T = ' + Math.round((3200 + 2800 * (0.5 + 0.5 * Math.sin(t * 0.9))) / 10) * 10 + ' K',
+    ph: t => { let n = 0; for (let i = 0; i < 7; i++) if (((t * 0.55 + i / 7) % 1) >= 0.4) n++; return 'e\u207b freed: ' + n; },
+    hy: t => (((t * 0.6) % 1) < 0.5) ? 'n = 3' : 'n = 3 \u2192 2 \u00b7 656 nm',
+    rd: t => { const rem = Math.pow(2, -(t % 9) / 2.2); let n = 0; for (let i = 0; i < 60; i++) if (((i * 9301 + 49297) % 233280) / 233280 < rem) n++; return 'N = ' + n + ' / 60'; },
+    br: t => '\u03b8 = ' + ((0.35 + 0.2 * Math.sin(t * 1.2)) * 180 / Math.PI).toFixed(1) + '\u00b0',
+    dc: () => 'V = 6 V \u00b7 I = 0.5 A'
+  };
+
   /* ---------- build the gallery ---------- */
   const esc = s => String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;');
-  root.innerHTML = '<div class="sim-filters" role="group" aria-label="Filter simulations">' + CATS.map((c, i) => '<button type="button" class="sim-chip' + (i ? '' : ' on') + '" data-cat="' + esc(c) + '">' + esc(c) + '</button>').join('') + '</div>' +
+  const count = c => c === 'All' ? SIMS.length : SIMS.filter(s => s.cat === c).length;
+  root.innerHTML = '<div class="sim-filters" role="group" aria-label="Filter simulations">' + CATS.map((c, i) => '<button type="button" class="sim-chip' + (i ? '' : ' on') + '" data-cat="' + esc(c) + '" style="--c:' + CCOL[c] + '" aria-pressed="' + (i ? 'false' : 'true') + '"><i aria-hidden="true"></i>' + esc(c) + ' <small>' + count(c) + '</small></button>').join('') + '</div>' +
     '<div class="sim-grid">' + SIMS.map(s => '<button type="button" class="sim-card" data-id="' + s.id + '" data-cat="' + esc(s.cat) + '" style="--a:' + s.a + ';--b:' + s.b + '" aria-label="Open the ' + esc(s.t) + ' simulation">' +
-      '<canvas width="' + W * 2 + '" height="' + H * 2 + '" aria-hidden="true"></canvas><span class="go" aria-hidden="true">&#9654;</span>' +
+      '<span class="screen"><canvas width="' + W * 2 + '" height="' + H * 2 + '" aria-hidden="true"></canvas><span class="open" aria-hidden="true">Open lab</span><span class="rd" aria-hidden="true"><i></i><span></span></span></span>' +
       '<span class="meta"><span class="tag">' + esc(s.cat) + '</span><strong class="ttl">' + esc(s.t) + '</strong><span class="dsc">' + esc(s.d) + '</span></span></button>').join('') + '</div>';
-  const cards = Array.from(root.querySelectorAll('.sim-card')), ctxs = cards.map(c => { const x = c.querySelector('canvas').getContext('2d'); x.scale(2, 2); return x; });
+  const cards = Array.from(root.querySelectorAll('.sim-card')), rds = cards.map(c => c.querySelector('.rd span')), ctxs = cards.map(c => { const x = c.querySelector('canvas').getContext('2d'); x.scale(2, 2); return x; });
   root.querySelectorAll('.sim-chip').forEach(b => b.addEventListener('click', () => {
-    root.querySelectorAll('.sim-chip').forEach(x => x.classList.toggle('on', x === b));
+    root.querySelectorAll('.sim-chip').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); });
     cards.forEach(c => { c.hidden = b.dataset.cat !== 'All' && c.dataset.cat !== b.dataset.cat; });
   }));
   cards.forEach(c => c.addEventListener('click', () => { location.hash = c.dataset.id; }));
@@ -98,9 +113,11 @@
 
   /* ---------- animation loop (static frame if the visitor prefers reduced motion) ---------- */
   const still = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const seen = new Set(), io = 'IntersectionObserver' in window ? new IntersectionObserver(es => es.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target))) : null;
+  if (io) cards.forEach(c => io.observe(c));
   function frame(ms) {
     if (!root.hidden && !document.hidden) { const t = ms / 1000;
-      cards.forEach((card, i) => { if (card.hidden) return; const c = ctxs[i]; c.clearRect(0, 0, W, H); c.save(); D[card.dataset.id](c, still ? 1.2 : t); c.restore(); }); }
+      cards.forEach((card, i) => { if (card.hidden || (io && !still && !seen.has(card))) return; const c = ctxs[i], tt = still ? 1.2 : t; c.clearRect(0, 0, W, H); c.save(); D[card.dataset.id](c, tt); c.restore(); rds[i].textContent = RO[card.dataset.id](tt); }); }
     if (!still) requestAnimationFrame(frame);
   }
   requestAnimationFrame(frame);
